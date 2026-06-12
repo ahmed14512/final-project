@@ -8,6 +8,7 @@
     {{--CSS--}}
     <link  href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/app.css')}}" rel="stylesheet" >
+    <link href="{{asset('css/authpopup.css')}}" rel="stylesheet" >
     @yield('styles')
 </head>
 
@@ -40,10 +41,107 @@
             <div class="nav-inner w-100 d-flex flex-column flex-lg-row align-items-lg-center gap-3 py-3 py-lg-0">
 
             {{--All Categories Button--}}  
-            <button class="cat-btn">
+            <div class="dropdown">
+                <button class="cat-btn dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="true">
                     <img src="{{asset('images/icons/all-categories.svg')}}" alt="icon" class="cat-btn-icon">
                         <span>All Categories</span>
                 </button>
+            
+                <ul class="dropdown-menu cat-dropdown-menu">
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/laptops.svg') }}"
+                                    alt="Laptops" class="cat-item-icon">
+                            </div>
+                            <span>Computers & Laptops</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/mobile-phones.svg') }}"
+                                    alt="mobile-phones" class="cat-item-icon">
+                            </div>
+                            <span>Mobile Phones</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/home-appliances.svg') }}"
+                                    alt="home-appliances" class="cat-item-icon">
+                            </div>
+                            <span>TV & Audio</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/appliances.svg') }}"
+                                    alt="appliances" class="cat-item-icon">
+                            </div>
+                            <span>Refrigerators</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/washing-machine.svg') }}"
+                                    alt="washing-machine" class="cat-item-icon">
+                            </div>
+                            <span>Washing Machines</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/ac.svg') }}"
+                                    alt="ac" class="cat-item-icon">
+                            </div>
+                            <span>Fans & AC</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/blender.svg') }}"
+                                    alt="blender" class="cat-item-icon">
+                            </div>
+                            <span>Mixer Grinders / Blenders</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/oven.svg') }}"
+                                    alt="oven" class="cat-item-icon">
+                            </div>
+                            <span>Microwave Ovens</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item cat-item" href="/products?category=laptops">
+                            <div class="cat-item-icon-wrap">
+                                <img src="{{ asset('images/icons/cooker.svg') }}"
+                                    alt="cooker" class="cat-item-icon">
+                            </div>
+                            <span>Rice Cookers</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+
+
             
 
                 {{--search--}}
@@ -54,14 +152,78 @@
                         </button>        
                 </div>
 
-                {{--sign-in--}}
-                <button class="user-account ms-lg-auto">
+    {{--sign-in--}}
+    @auth            
+    <div class="dropdown">
+        <button class="user-account dropdown-toggle"
+                data-bs-toggle="dropdown"
+                data-bs-auto-close="true">
+            <img src="{{ asset('images/icons/user.svg') }}"
+                alt="user" class="user-icon">
+            <div class="user-btn-text">
+                <span class="user-btn-top">Account</span>
+                <span class="user-btn-btm">{{ Auth::user()->name }}</span>
+            </div>
+        </button>
+
+        <ul class="dropdown-menu account-dropdown">
+
+            {{-- User name + sign out --}}
+            <li class="account-dropdown-user">
+                <div class="account-user-info">
+                    <span class="account-user-name">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="/logout">
+                        @csrf
+                        <button type="submit" class="account-signout-link">
+                            Sign Out
+                        </button>
+                    </form>
+                </div>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            {{-- Links --}}
+            <li>
+                <a class="dropdown-item account-menu-item" href="/my-account">
+                    <img src="{{ asset('images/icons/user-menu.svg') }}"
+                        alt="" class="account-menu-icon">
+                    Your Profile
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item account-menu-item" href="/my-account/addresses">
+                    <img src="{{ asset('images/icons/address.svg') }}"
+                        alt="" class="account-menu-icon">
+                    Manage Addresses
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item account-menu-item" href="/my-account/wishlist">
+                    <img src="{{ asset('images/icons/wishlist-menu.svg') }}"
+                        alt="" class="account-menu-icon">
+                    Your Wishlist
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item account-menu-item" href="/my-account/orders">
+                    <img src="{{ asset('images/icons/order-status.svg') }}"
+                        alt="" class="account-menu-icon">
+                    Order Status
+                </a>
+            </li>
+
+        </ul>
+    </div>
+                @else
+                <button class="user-account ms-lg-auto" onclick="openAuthPopup()">
                     <img src="{{asset('images/icons/user.svg')}}" alt="user" class="btn-icon">    
                     <div class="btn-text">
                         <span class="btn-top"> Account </span>
-                        <a class="btn-btm" href="#">Sign in/ Register</a>
+                        <span class="btn-btm">Sign in/ Register</span>
                     </div>
                 </button>
+                @endauth
 
                 {{--wishlist--}}
                 <button class="wishlist-btn ms-lg-auto">
@@ -95,14 +257,14 @@
     <div class="container">
         
         {{-- Hamburger button (shows on mobile) --}}
-        <!-- <button class="navbar-toggler border-0" type="button"
+        <button class="navbar-toggler border-0" type="button"
             data-bs-toggle="collapse"
             data-bs-target="#mainNav"
             aria-controls="mainNav"
             aria-expanded="false"
             aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-        </button> -->
+        </button>
 
         {{--bottom navigation--}}
         <div class="collapse navbar-collapse" id="mainNav">
@@ -116,15 +278,98 @@
 
                     {{--brands--}}
                     <li class="nav-item dropdown">
-                        <a href="#" class="btm-nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown"> Brands </a>  
+                        <a href="#" class="btm-nav-link dropdown-toggle" data-bs-toggle="dropdown"  data-bs-auto-close="true"> Brands </a>
                         
-                            <ul class="dropdown-menu btm-dropdown">
-                                <li><a href="#" class="dropdown-item">Samsung</a></li>
-                                <li><a href="#" class="dropdown-item">Apple</a></li>
-                                <li><a href="#" class="dropdown-item">Sony</a></li>
-                                <li><a href="#" class="dropdown-item">LG</a></li>
-                                <li><a href="#" class="dropdown-item">Dell</a></li>
+                            <ul class="dropdown-menu btm-dropdown brands-dropdown-menu">
+                                <li>
+                                    <a href="#" class="dropdown-item brands-item">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{asset('images/brands/samsung.png')}}" alt="samsung" class="brand-item-logo">
+                                        </div>
+                                        <span>Samsung</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item brands-item" href="/products?brand=apple">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{ asset('images/brands/apple.png') }}"
+                                                alt="Apple" class="brand-item-logo">
+                                        </div>
+                                        <span>Apple</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item brands-item" href="/products?brand=sony">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{ asset('images/brands/hp.png') }}"
+                                                alt="Sony" class="brand-item-logo">
+                                        </div>
+                                        <span>HP</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item brands-item" href="/products?brand=sony">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{ asset('images/brands/acer.png') }}"
+                                                alt="acer" class="brand-item-logo">
+                                        </div>
+                                        <span>Acer</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item brands-item" href="/products?brand=sony">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{ asset('images/brands/usha.png') }}"
+                                                alt="usha" class="brand-item-logo">
+                                        </div>
+                                        <span>Usha</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item brands-item" href="/products?brand=sony">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{ asset('images/brands/dell.png') }}"
+                                                alt="dell" class="brand-item-logo">
+                                        </div>
+                                        <span>Dell</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item brands-item" href="/products?brand=sony">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{ asset('images/brands/Asus.png') }}"
+                                                alt="Asus" class="brand-item-logo">
+                                        </div>
+                                        <span>Asus</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item brands-item" href="/products?brand=sony">
+                                        <div class="brand-item-logo-wrap">
+                                            <img src="{{ asset('images/brands/panasonic.png') }}"
+                                                alt="Asus" class="brand-item-logo">
+                                        </div>
+                                        <span>panasonic</span>
+                                    </a>
+                                </li>
+
+
+                                
+                                
+                                <!-- <li><hr class="dropdown-divider"></li>
+                               
+                                <li>
+                                    <a class="dropdown-item brands-view-all" href="/brands">
+                                        View All Brands
+                                    </a>
+                                </li>   -->
                             </ul>           
                     </li>
 
@@ -346,7 +591,8 @@
     </div>
 </footer>
     
-
+{{-- Auth Popup --}}
+@include('layouts.auth-popup')
 
 
 
@@ -367,5 +613,6 @@ function toggleCol(titleEl) {
     btn.classList.toggle('open',  !isOpen);
 }
 </script>
+@yield('scripts')
 </body>
 </html>

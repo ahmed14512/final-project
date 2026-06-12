@@ -491,7 +491,6 @@ nav .navbar {
 }
 
 
-
 /* --Footer links-- */
 .footer-links {
     list-style: none;
@@ -630,4 +629,212 @@ nav .navbar {
 
 .footer-legal-links a:hover {
     color: var(--color-brand-primary);
+}
+
+
+
+/* ----------------- Brands -------------------------*/
+.brands-dropdown-menu {
+    min-width: 200px;
+    padding: 6px;
+    border: 1px solid var(--bg-neutral-secondary);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.brands-item {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px !important;
+    border-radius: 7px;
+    transition: background-color 0.15s;
+    font-size: 0.88rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary) !important;
+}
+
+.brands-item:hover {
+    background-color: var(--color-brand-tertiary) !important;
+    color: var(--color-brand-primary) !important;
+}
+
+.brand-item-logo-wrap {
+    width: 60px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: var(--bg-gray-10);
+    border-radius: 4px;
+    padding: 3px;
+}
+
+.brand-item-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: filter 0.2s, opacity 0.2s;
+}
+
+.brands-item:hover .brand-item-logo {
+    filter: grayscale(0%);
+    opacity: 1;
+    /* Logo turns full color on hover */
+}
+
+.brands-view-all {
+    font-size: 0.82rem !important;
+    color: var(--color-brand-primary) !important;
+    font-weight: var(--font-weight-medium) !important;
+    text-align: center;
+    padding: 8px !important;
+    border-radius: 6px;
+}
+
+.brands-view-all:hover {
+    background-color: var(--color-brand-tertiary) !important;
+}
+
+
+
+
+
+/* ---------------- category drop-down ---------------------------- */
+.cat-btn.dropdown-toggle::after {
+    display: none;
+}
+
+
+.cat-dropdown-menu {
+    min-width: 220px;
+    padding: 6px;
+    border: 1px solid var(--bg-neutral-secondary);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.cat-dropdown-menu::-webkit-scrollbar {
+    width: 4px;
+}
+
+.cat-dropdown-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cat-dropdown-menu::-webkit-scrollbar-thumb {
+    background: var(--bg-neutral-tertiary);
+    border-radius: 4px;
+}
+
+
+.cat-item {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px !important;
+    border-radius: 7px;
+    transition: background-color 0.15s;
+    font-size: 0.88rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary) !important;
+    text-decoration: none;
+}
+
+.cat-item:hover {
+    background-color: var(--color-brand-tertiary) !important;
+    color: var(--color-brand-primary) !important;
+}
+
+.cat-item-icon-wrap {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 8px;
+    padding: 6px;
+    transition: background-color 0.15s;
+}
+
+.cat-item:hover .cat-item-icon-wrap {
+    background-color: var(--color-brand-tertiary);
+
+}
+
+.cat-item-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: filter 0.2s;
+}
+
+
+.account-dropdown {
+    min-width: 220px;
+    padding: 6px;
+    border: 1px solid var(--bg-neutral-secondary);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.account-dropdown-user {
+    padding: 10px 12px;
+}
+
+.account-user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.account-user-name {
+    font-size: 0.88rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.account-signout-link {
+    font-size: 0.78rem;
+    color: var(--text-error-subtle);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-family-body);
+    padding: 0;
+    transition: opacity 0.2s;
+}
+
+.account-signout-link:hover {
+    opacity: 0.7;
+}
+
+.account-menu-item {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px !important;
+    border-radius: 7px;
+    font-size: 0.88rem;
+    color: var(--text-secondary) !important;
+    transition: background-color 0.15s;
+}
+
+.account-menu-item:hover {
+    background-color: var(--color-brand-tertiary) !important;
+    color: var(--color-brand-primary) !important;
+}
+
+.account-menu-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    opacity: 0.6;
 }

@@ -148,7 +148,7 @@
 
 
 
-/* --hero banner-- */
+/* -------------------------hero banner---------------------------------- */
 
 .hero-section {
   width: 100%;
@@ -179,7 +179,7 @@
 }
 
 
-/* --new arrivals-- */
+/* ---------------------------------------new arrivals---------------------------------- */
 
 .new-arrivals {
   margin: 50px 0px;
@@ -188,6 +188,8 @@
 .section-header {
   margin-bottom: 20px;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 
@@ -199,28 +201,47 @@
   margin: 0;
 }
 
+.section-view-all {
+  font-size: 0.88rem;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-brand-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.section-view-all:hover {
+  border-bottom-color: var(--color-brand-primary);
+}
+
 .arrivals-wrapper {
   position: relative;
 }
 
 .arrivals-track {
   display: flex;
-  gap: 16px;
-  overflow-x: auto;
+  gap: 24px;
+  overflow-x: scroll;
   scroll-snap-type: x mandatory;
   padding-bottom: 12px;
   scrollbar-width: none;
+  cursor: grab;
 }
 
 .arrivals-track::-webkit-scrollbar {
   display: none;
 }
 
+.arrivals-track.dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
 
 /* --product card-- */
 .product-card {
-  min-width: 220px;
-  max-width: 220px;
+  min-width: 240px;
+  max-width: 240px;
   background-color: var(--bg-neutral-primary);
   border: solid 1.2px var(--bg-neutral-tertiary);
   padding: 20px;
@@ -229,6 +250,8 @@
   scroll-snap-align: start;
   flex-shrink: 0;
   transition: box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
@@ -243,6 +266,7 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  background-color: var(--bg-gray-10);
 }
 
 .card-img {
@@ -259,16 +283,18 @@
 
 /* --label-- */
 .label-new {
-  position: relative;
+  display: flex;
   top: 10px;
   right: 0;
+  width: 60px;
   background-color: var(--label-new-bg-bold);
   color: var(--label-new-text-bold);
   font-size: 0.7rem;
-  padding: 2px 10px;
+  padding: 2px 8px;
   font-weight: var(--font-weight-semibold);
   border-radius: 6px 0 6px 0px;
   letter-spacing: 0.05em;
+  justify-content: center;
 }
 
 .label-sale {
@@ -278,23 +304,27 @@
   background-color: var(--label-free-bg-bold);
   color: var(--label-new-text-bold);
   font-size: 0.7rem;
-  padding: 2px 10px;
+  padding: 2px 8px;
   font-weight: var(--font-weight-semibold);
   border-radius: 6px 0 6px 0px;
   letter-spacing: 0.05em;
 }
 
+
 .card-body {
-  padding: 20px 0px 0px 0px;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .price-wrap {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
 }
 
-.price-discount {
+.product-price {
   font-size: 1rem;
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
@@ -316,13 +346,21 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
+  text-decoration: none;
+  /* flex: 1; */
 }
+
+.card-product-name:hover {
+  color: var(--color-brand-primary);
+}
+
 
 .card-footer-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 2px;
+  /* margin-top: auto; */
 }
 
 .star-rating {
@@ -340,13 +378,15 @@
 .add-to-cart-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 100%;
   gap: 5px;
   margin-top: 6px;
   padding: 6px 8px;
   background-color: var(--color-brand-secondary);
   border: none;
   border-radius: 4px;
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   font-weight: var(--font-weight-semibold);
   font-family: var(--font-family-body);
   cursor: pointer;
@@ -357,4 +397,157 @@
 .add-to-cart-btn:hover {
   background-color: var(--color-brand-secondary);
   opacity: 0.9;
+}
+
+.cart-btn-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+
+.arrivals-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-60%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.2s, opacity 0.3s;
+  z-index: 10;
+}
+
+.arrivals-arrow-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+
+.arrivals-arrow-right {
+  right: -18px;
+}
+
+.arrivals-arrow-left {
+  left: -18px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+.arrivals-arrow-left .arrivals-arrow-icon {
+  transform: rotate(180deg);
+}
+
+
+
+/* ---------------------------------------promo banners---------------------------------- */
+
+.promo-section {
+  margin-bottom: 48px;
+}
+
+.promo-banner {
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.promo-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.promo-banner:hover .promo-img {
+  transform: scale(1.02);
+  opacity: 0.92;
+}
+
+@media (max-width: 991.98px) {
+
+  .hero-img {
+    height: 320px;
+  }
+
+  .product-card {
+    min-width: 190px;
+    max-width: 190px;
+    /* Slightly smaller cards on tablet */
+  }
+
+  .promo-img {
+    height: 180px;
+  }
+}
+
+
+@media (max-width: 575.98px) {
+
+  .hero-img {
+    height: 200px;
+    /* Shorter banner on mobile */
+  }
+
+  .hero-section {
+    margin-bottom: 28px;
+  }
+
+  .section-arrivals {
+    margin-bottom: 28px;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .product-card {
+    min-width: 160px;
+    max-width: 160px;
+    /* Smaller cards on mobile —
+           shows ~2 cards at a time */
+  }
+
+  .card-body-custom {
+    padding: 10px;
+  }
+
+  .price-discount {
+    font-size: 0.9rem;
+  }
+
+  .add-to-cart-btn span {
+    display: none;
+    /* On very small screens hide the text,
+           show only the cart icon */
+  }
+
+  .add-to-cart-btn {
+    padding: 6px 8px;
+  }
+
+  .promo-img {
+    height: 140px;
+    /* Shorter promo banners on mobile */
+  }
+
+  .section-promo {
+    margin-bottom: 28px;
+  }
+
+  .arrivals-arrow {
+    right: -10px;
+    width: 30px;
+    height: 30px;
+    /* Smaller arrow on mobile */
+  }
 }

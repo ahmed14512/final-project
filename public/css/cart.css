@@ -1,0 +1,368 @@
+:root {
+
+    /* =========================
+     FONT
+  ========================= */
+    --font-family-title: "Poppins", sans-serif;
+    --font-family-body: "Poppins", sans-serif;
+
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* =========================
+     BRAND COLORS
+  ========================= */
+    --color-brand-primary: #00378f;
+    --color-brand-primary-hover: #0044b3;
+
+    --color-brand-secondary: #ffae00;
+    --color-brand-secondary-hover: rgba(255, 174, 0, 0.8);
+
+    --color-brand-tertiary: #ddeaff;
+
+    /* =========================
+     NEUTRAL BACKGROUND
+  ========================= */
+    --bg-neutral-primary: #ffffff;
+    --bg-neutral-secondary: #eaeaea;
+    --bg-neutral-tertiary: #cacaca;
+    --bg-neutral-disabled: #a8a8a8;
+
+    /* =========================
+     GREYSCALE
+  ========================= */
+    --bg-gray-10: #f5f5f5;
+    --bg-gray-20: #e0e0e0;
+    --bg-gray-30: #cccccc;
+    --bg-gray-40: #b8b8b8;
+    --bg-gray-50: #a3a3a3;
+    --bg-gray-60: #8f8f8f;
+    --bg-gray-70: #7a7a7a;
+    --bg-gray-80: #666666;
+    --bg-gray-90: #525252;
+    --bg-gray-100: #3d3d3d;
+    --bg-gray-100-hover: #565656;
+
+    /* =========================
+     TEXT - NEUTRAL
+  ========================= */
+    --text-primary: #2c2c2c;
+    --text-secondary: #3d424a;
+    --text-tertiary: #565d6a;
+    --text-disabled: #4a5059;
+
+    /* =========================
+     TEXT - GREYSCALE
+  ========================= */
+    --text-gray-100: #3d3d3d;
+    --text-gray-90: #525252;
+    --text-gray-80: #666666;
+    --text-gray-70: #7a7a7a;
+    /* strikethrough */
+    --text-gray-60: #8f8f8f;
+    --text-gray-50: #a3a3a3;
+    --text-gray-40: #b8b8b8;
+    /* placeholder */
+    --text-gray-30: #cccccc;
+    --text-gray-20: #e0e0e0;
+    --text-gray-10: #f5f5f5;
+
+    /* =========================
+     SEMANTIC COLORS
+  ========================= */
+
+    /* Success */
+    --bg-success-subtle: #ddfddd;
+    --bg-success-bold: #079f07;
+    --text-success-subtle: #008700;
+    --text-success-bold: #ffffff;
+
+    /* Error */
+    --bg-error-subtle: #fddddd;
+    --bg-error-bold: #9f070a;
+    --text-error-subtle: #9f070a;
+    --text-error-bold: #ffffff;
+
+    /* Warning */
+    --bg-warning-subtle: #fee8dc;
+    --bg-warning-bold: #ff5b02;
+    --text-warning-subtle: #e95200;
+    --text-warning-bold: #ffffff;
+
+    /* Info */
+    --bg-info-subtle: #dbefff;
+    --bg-info-bold: #0081eb;
+    --text-info-subtle: #0073d0;
+    --text-info-bold: #ffffff;
+
+    /* =========================
+     LABEL COLORS
+  ========================= */
+
+    --label-off-bg-subtle: #ffdbdf;
+    --label-off-bg-bold: #eb001b;
+    --label-off-text-subtle: #eb001b;
+    --label-off-text-bold: #ffffff;
+
+    --label-new-bg-subtle: #ededed;
+    --label-new-bg-bold: #2c2c2c;
+    --label-new-text-subtle: #2c2c2c;
+    --label-new-text-bold: #ffffff;
+
+    --label-bank-bg-subtle: #dbe9ff;
+    --label-bank-bg-bold: #00378f;
+    --label-bank-text-subtle: #00378f;
+    --label-bank-text-bold: #ffffff;
+
+    --label-free-bg-subtle: #dbffe7;
+    --label-free-bg-bold: #006823;
+    --label-free-text-subtle: #006823;
+    --label-free-text-bold: #ffffff;
+
+    /* =========================
+     BASE COLORS
+  ========================= */
+    --color-white: #ffffff;
+    --color-black: #000000;
+
+    /* =========================
+     LINKS
+  ========================= */
+    --text-link: #0056c7;
+
+    /* =========================
+     FOOTER
+  ========================= */
+    --bg-footer: #f1f1f2;
+
+    /* =========================
+     Z-INDEX
+  ========================= */
+    --z-popup: 10;
+}
+
+/* -------------- cart page -------------- */
+.cart-section {
+    padding: 32px 0 48px;
+}
+
+.cart-page-title {
+    font-size: 1.6rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    font-family: var(--font-family-title);
+}
+
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.cart-items-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background-color: var(--bg-neutral-primary);
+    border: 1.5px solid var(--bg-neutral-secondary);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--bg-neutral-secondary);
+    align-items: center;
+}
+
+.cart-item:last-of-type {
+    border-bottom: none;
+}
+
+/* Thumbnail */
+.cart-item-img-wrap {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    background-color: transparent;
+    flex-shrink: 0;
+    padding: 10px;
+}
+
+.cart-item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Col 2 — Product info */
+.cart-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cart-item-name {
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    text-decoration: none;
+    line-height: 1.4;
+    transition: color 0.2s;
+}
+
+.cart-item-name:hover {
+    color: var(--color-brand-primary);
+}
+
+.cart-item-sku {
+    font-size: 0.9rem;
+    color: var(--text-tertiary);
+}
+
+/* Remove + Wishlist btn */
+.cart-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 6px;
+}
+
+.cart-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: var(--font-family-body);
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.cart-remove-btn {
+    color: var(--text-error-subtle);
+}
+
+.cart-remove-btn:hover {
+    color: var(--bg-error-bold);
+}
+
+.cart-wishlist-btn {
+    color: var(--color-brand-primary);
+}
+
+.cart-wishlist-btn:hover {
+    color: var(--color-brand-primary-hover);
+}
+
+.cart-action-icon {
+    width: 13px;
+    height: 13px;
+    object-fit: contain;
+}
+
+.cart-action-sep {
+    color: var(--bg-neutral-tertiary);
+    font-size: 0.75rem;
+}
+
+/* Col 3 — Price + Qty */
+.cart-item-price-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.cart-item-price {
+    font-size: 1rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+
+.qty-wrap {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid var(--bg-neutral-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    background-color: var(--bg-gray-10);
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    background-color: var(--bg-gray-20);
+}
+
+.qty-input {
+    width: 40px;
+    height: 32px;
+    border: none;
+    border-left: 1.5px solid var(--bg-neutral-secondary);
+    border-right: 1.5px solid var(--bg-neutral-secondary);
+    text-align: center;
+    font-size: 0.88rem;
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+/* Checkout button */
+.checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    background-color: var(--color-brand-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-family-body);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.checkout-btn:hover {
+    background-color: var(--color-brand-primary-hover);
+    color: #ffffff;
+}
+
+.checkout-next-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
