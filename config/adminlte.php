@@ -415,6 +415,23 @@ return [
                 ],
             ],
         ],
+
+        'Sweetalert2' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type'  => 'css',
+                    'asset' => true,
+                    'location' => 'css/sweetalert2.min.css',
+                ],
+                [
+                    'type'  => 'js',
+                    'asset' => true,
+                    'location' => 'js/sweetalert2.min.js',
+                ],
+            ],
+        ],
+
         'Select2' => [
             'active' => false,
             'files' => [
@@ -440,16 +457,7 @@ return [
                 ],
             ],
         ],
-        'Sweetalert2' => [
-            'active' => false,
-            'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
-                ],
-            ],
-        ],
+        
         'Pace' => [
             'active' => false,
             'files' => [

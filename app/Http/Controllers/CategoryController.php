@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\support\Str;
+use Illuminate\Support\Str;
 
 
 class CategoryController extends Controller
@@ -35,7 +35,7 @@ class CategoryController extends Controller
     {
         $request -> validate ([
 
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg,svg|max:2048',
             'status' => 'required|boolean',
@@ -50,7 +50,7 @@ class CategoryController extends Controller
 
 
         //save to database
-        category::create ([
+        Category::create ([
             'name' => $request-> name,
             'slug' => Str::slug ($request->name),
             'description' => $request -> description,
@@ -85,14 +85,14 @@ class CategoryController extends Controller
             'status' => 'required | boolean',
         ]);
 
-        $imagepath = null;
+        $imagepath = $category -> image;
 
         if($request -> hasFile('image')){
             $imagepath = $request -> file('image')
-                                    -> store('categories'.'public');
+                                    -> store('categories','public');
         }
 
-        category::update ([
+        $category->update ([
             'name' => $request -> name,
             'slug' => Str::slug($request-> name),
             'description' => $request -> description,

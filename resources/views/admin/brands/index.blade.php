@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Categories')
+@section('title', 'Brands')
 
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
-        <h1>Categories</h1>
+        <h1>Brands</h1>
 
-        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus me-1"></i> Add Category
+        <a href="{{ route('admin.brands.create') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i> Add Brands
         </a>
     </div>
 @endsection
@@ -28,26 +28,26 @@
                 </thead>
 
                 <tbody>
-                    @forelse($categories as $category)
+                    @forelse($brands as $brand)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>
-                                @if ($category->image)
-                                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
-                                        width="50" height="50" class="rounded object-fit-cover">
+                                @if ($brand->logo)
+                                    <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}" width="50"
+                                        height="50" class="rounded object-fit-cover">
                                 @else
                                     <span class="text-muted">No image</span>
                                 @endif
                             </td>
 
-                            <td>{{ $category->name }}</td>
+                            <td>{{ $brand->name }}</td>
 
                             <td>
-                                <code> {{ $category->slug }}</code>
+                                <code> {{ $brand->slug }}</code>
                             </td>
 
                             <td>
-                                @if ($category->status)
+                                @if ($brand->status)
                                     <span class="badge bg-success">Active</span>
                                 @else
                                     <span class="badge bg-danger">Inactive</span>
@@ -56,18 +56,17 @@
 
                             <td>
                                 {{-- edit btn --}}
-                                <a href="{{ route('admin.categories.edit', $category->id) }}"
-                                    class="btn btn-sm btn-warning">
+                                <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-sm btn-warning">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
 
                                 {{-- delete btn --}}
-                                <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
-                                    style="display: inline-block;" id="delete-category-{{ $category->id }}">
+                                <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST"
+                                    style="display:inline-block;" id="delete-brand-{{ $brand->id }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button"class="btn btn-sm btn-danger"
-                                        onclick="confirmDelete('delete-category-{{ $category->id }}')">
+                                        onclick="confirmDelete('delete-brand-{{ $brand->id }}')">
                                         <i class="fas fa-trash"></i> Delete
                                     </button>
 
@@ -75,13 +74,13 @@
                             </td>
                         </tr>
 
-                        {{-- Show message if no categories --}}
+                        {{-- Show message if no brand --}}
 
                     @empty
                         <tr>
                             <td colspan="6" class="text-center text-muted py-3">
-                                No categories found.
-                                <a href="{{ route('admin.categories.create') }}">
+                                No brands found.
+                                <a href="{{ route('admin.brands.create') }}">
                                     Add one now
                                 </a>
                             </td>

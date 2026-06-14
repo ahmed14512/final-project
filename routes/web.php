@@ -1,13 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductImageController;
 
 Route::get('/', function () {
     return view('pages.home');
 });
 
 Route::get('/products', function () {
-    return view('pages.products');
+    return view('pages.products');  
 });
 
 Route::get('/products/{id}', function ($id) {
@@ -34,13 +38,6 @@ Route::get('/my-account', function () {
     return view('pages.my-account');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    });
-});
-
-use App\Http\Controllers\CategoryController;
 
 Route::prefix('admin')-> name('admin.')-> group(function(){
 
@@ -49,7 +46,21 @@ Route::prefix('admin')-> name('admin.')-> group(function(){
     }) -> name('dashboard');
 
     //categories
-    Route::resource('categories', CategoryController::class);
+    Route::resource('categories', CategoryController::class)
+                    ->except(['show']);
+    
+    // Brands
+    Route::resource('brands', BrandController::class)
+                    ->except(['show']);
 
+    // products
+    Route::resource('products', ProductController::class)
+                    ->except(['show']);
+               
+    // Delete single thumbnail
+    Route::delete('products/images/{image}',
+        [ProductImageController::class, 'destroy'])
+        ->name('products.images.destroy');  
 });
+
 

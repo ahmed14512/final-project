@@ -110,3 +110,7 @@
 </div>
 
 @endsection
+
+@section('js')
+    @include('admin.partials.alerts')
+@endsection
