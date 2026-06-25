@@ -134,19 +134,10 @@
                             @foreach ($product->images as $thumb)
                                 <div class="position-relative">
                                     <img src="{{ asset('storage/' . $thumb->image) }}" alt="thumbnail" width="80"
-                                        class="rounded border">
-                                    <form action="{{ route('admin.products.images.destroy', $thumb->id) }}" method="POST"
-                                        style="display:inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm position-absolute top-0 end-0"
-                                            style="padding:1px 5px;font-size:10px;"
-                                            onclick="return confirm('Remove this image?')">
-                                            x
-                                        </button>
-                                    </form>
+                                            class="rounded border">
                                 </div>
                             @endforeach
+                        
                         </div>
                     </div>
                 @endif
@@ -159,6 +150,29 @@
                     <input type="file" name="thumbnails[]" class="form-control" accept="image/*" multiple>
                     <small class="text-muted">
                         Select multiple images to add more.
+                    </small>
+                </div>
+
+                {{-- Spec Image --}}
+                @if ($product->spec_image)
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Current Specification Image
+                        </label>
+                        <div>
+                            <img src="{{ asset('storage/' . $product->spec_image) }}" alt="Specification" width="100"
+                                class="rounded">
+                        </div>
+                    </div>
+                @endif
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Add New Image
+                    </label>
+                    <input type="file" name="spec_image" class="form-control" accept="image/*">
+                    <small class="text-muted">
+                        Leave empty to keep current image.
                     </small>
                 </div>
 

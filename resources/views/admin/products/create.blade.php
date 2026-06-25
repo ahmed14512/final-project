@@ -167,6 +167,21 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Specification Image
+                        </label>
+                        <input type="file" name="spec_image"
+                            class="form-control @error('spec_image') is-invalid @enderror" accept="image/*">
+                        <small class="text-muted">
+                            Spec shown on product cards Specification
+                            Max 2MB.
+                        </small>
+                        @error('spec_image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
 

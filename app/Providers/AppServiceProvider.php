@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+       view()->share('navCategories', \App\Models\Category::where('status', 1)->get());
+        view()->share('navBrands', \App\Models\Brand::where('status', 1)->get());
     }
 }

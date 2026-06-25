@@ -24,8 +24,7 @@ class ProductController extends Controller
     }
 
    
-    // create — show add product form
-   
+    // create — show add product form  
     public function create()
     {
         $categories = Category::where('status', 1)->get();
@@ -35,8 +34,7 @@ class ProductController extends Controller
                      compact('categories', 'brands'));
     }
 
-    // store — save new product
-   
+    // store — save new product  
     public function store(Request $request)
     {
 
@@ -51,6 +49,7 @@ class ProductController extends Controller
             'is_featured'  => 'boolean',
             'status'       => 'required|boolean',
             'image'        => 'nullable|image|mimes:jpg,png,jpeg,svg,webp|max:2048',
+            'spec_image'   => 'nullable|image|mimes:jpg,png,jpeg,svg,webp|max:2048',
             'thumbnails'   => 'nullable|array',
             'thumbnails.*' => 'image|mimes:jpg,png,jpeg,svg,webp|max:2048',
         ]);
@@ -60,6 +59,12 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')
                                  ->store('products', 'public');
+        }
+
+         $imageSpec = null;
+        if ($request->hasFile('spec_image')) {
+            $imageSpec = $request->file('spec_image')
+                                 ->store('products/spec', 'public');
         }
 
         // Save product
@@ -72,6 +77,7 @@ class ProductController extends Controller
             'brand_id'    => $request->brand_id,
             'price'       => $request->price,
             'image'       => $imagePath,
+            'spec_image'  => $imageSpec,
             'stock'       => $request->stock,
             'is_featured' => $request->is_featured ?? 0,
             'status'      => $request->status,
@@ -95,7 +101,6 @@ class ProductController extends Controller
 
    
     // edit — show edit form
-  
     public function edit(Product $product)
     {
         $categories = Category::where('status', 1)->get();
@@ -121,6 +126,7 @@ class ProductController extends Controller
             'is_featured'  => 'boolean',
             'status'       => 'required|boolean',
             'image'        => 'nullable|image|mimes:jpg,png,jpeg,svg,webp|max:2048',
+            'spec_image'   => 'nullable|image|mimes:jpg,png,jpeg,svg,webp|max:2048',
             'thumbnails'   => 'nullable|array',
             'thumbnails.*' => 'image|mimes:jpg,png,jpeg,svg,webp|max:2048',
         ]);
@@ -130,6 +136,12 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')
                                  ->store('products', 'public');
+        }
+
+        $imageSpec = $product->spec_image;
+        if ($request->hasFile('spec_image')) {
+            $imageSpec = $request->file('spec_image')
+                                 ->store('products/spec', 'public');
         }
 
    
@@ -143,6 +155,7 @@ class ProductController extends Controller
             'price'       => $request->price,
             'image'       => $imagePath,
             'stock'       => $request->stock,
+            'spec_image'  => $imageSpec,
             'is_featured' => $request->is_featured ?? 0,
             'status'      => $request->status,
         ]);

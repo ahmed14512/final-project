@@ -365,4 +365,5 @@
     width: 16px;
     height: 16px;
     object-fit: contain;
+    filter: brightness(0) invert(1);
 }

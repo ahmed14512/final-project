@@ -200,7 +200,6 @@
 }
 
 .filter-clear-btn {
-    display: none;
     font-size: 0.8rem;
     color: var(--bg-error-bold);
     background: none;
@@ -344,7 +343,7 @@
 .products-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    gap: 10px;
 }
 
 

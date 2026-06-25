@@ -443,7 +443,8 @@
 .btn-add-to-cart {
     display: inline-flex;
     align-items: center;
-    padding: 8px 20px;
+    padding: 12px 24px;
+    width: 100%;
     background-color: transparent;
     color: var(--color-brand-primary);
     border: 1.5px solid var(--color-brand-primary);
@@ -453,6 +454,7 @@
     font-family: var(--font-family-body);
     cursor: pointer;
     transition: border-color 0.2s, color 0.2s;
+     justify-content: center;
 }
 
 .btn-add-to-cart:hover {
@@ -463,7 +465,7 @@
     display: inline-flex;
     align-items: center;
     padding: 12px 24px;
-    width: 160px;
+    width: 100%;
     background-color: var(--color-brand-primary);
     color: var(--color-white);
     border: none;
@@ -488,6 +490,12 @@
     border: 1px solid var(--bg-neutral-secondary);
     margin-top: 40px;
     margin-bottom: 40px;
+}
+
+.spec-img{
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
 }
 
 .spec-title {

@@ -290,6 +290,7 @@ nav .navbar {
     cursor: pointer;
     text-align: left;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 
@@ -328,6 +329,7 @@ nav .navbar {
     white-space: nowrap;
     position: relative;
     flex-shrink: 0;
+    text-decoration: none;
 }
 
 .cart-count {

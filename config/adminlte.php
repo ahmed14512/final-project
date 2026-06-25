@@ -328,6 +328,10 @@ return [
         'icon' => 'fas fa-box',
     ],
 
+
+    
+
+
     // Sales section
     ['header' => 'SALES'],
 
@@ -457,7 +461,7 @@ return [
                 ],
             ],
         ],
-        
+
         'Pace' => [
             'active' => false,
             'files' => [

@@ -9,202 +9,188 @@
 
 @section('content')
 
-{{------------------------ Step indicator ---------------------}}
-<section class="checkout-steps-bar">
-    <div class="container">
-        <div class="checkout-steps">
-            <div class="checkout-step active">
-                <span class="step-number">1</span>
-                <span class="step-label">Shipping</span>
-            </div>
-        
+    {{-- ---------------------- Step indicator ------------------- --}}
+    <section class="checkout-steps-bar">
+        <div class="container">
+            <div class="checkout-steps">
+                <div class="checkout-step active">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Shipping</span>
+                </div>
 
-            <div class="checkout-step-line"></div>
 
-        
-            <div class="checkout-step">
-                <span class="step-number">2</span>
-                <span class="step-label">Payment</span>
-            </div>
-        
+                <div class="checkout-step-line"></div>
 
-            <div class="checkout-step-line"></div>
 
-        
-            <div class="checkout-step">
-                <span class="step-number">3</span>
-                <span class="step-label">Done</span>
+                <div class="checkout-step">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Payment</span>
+                </div>
+
+
+                <div class="checkout-step-line"></div>
+
+
+                <div class="checkout-step">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Done</span>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="checkout-section">
-    <div class="container">
-        <div class="checkout-layout">
+    <section class="checkout-section">
+        <div class="container">
+            <div class="checkout-layout">
 
 
-            {{------------------------ shipping form SAVED ---------------------}}
-            <div class="checkout-main">
-                
-                {{-- @auth --}}
-                <div class="checkout-card">
-                    <h2 class="checkout-card-title">Shipping Address</h2>
+                {{-- ---------------------- shipping form SAVED ------------------- --}}
+                <div class="checkout-main">
 
-                    <div class="address-list">
-                        
-                    {{-- Address 1 --}}
-                        <label class="address-card">
-                            <input type="radio" name="saved_address" value="1" checked class="address-radio">
-                            <div class="address-card-body">
-                                <div class="address-card-info">
-                                    <p class="address-name">John Silva</p>
-                                    <p class="address-text">
-                                        123 Main Street, Colombo 03, Western Province
-                                    </p>
-                                    <p class="address-phone">+94 77 123 4567</p>
+
+                    <div class="checkout-card" id="newAddressForm">
+                        <h2 class="checkout-card-title">Contact Information</h2>
+
+                        <form action="{{ route('checkout.saveAddress') }}" method="POST" id="shippingForm">
+                            @csrf
+
+                            {{-- @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                                <button type="button" class="address-edit-btn" onclick="editAddress(1)">
-                                    <img src="{{ asset('images/icons/edit.svg') }}" alt="edit" class="address-edit-icon">
-                                </button>
-                            </div>
-                        </label>
+                            @endif --}}
 
-                        {{-- Address 2 --}}
-                        <label class="address-card">
-                            <input type="radio" name="saved_address" value="2" class="address-radio">
-                            <div class="address-card-body">
-                                <div class="address-card-info">
-                                    <p class="address-name">John Silva</p>
-                                    <p class="address-text">
-                                        45 Galle Road, Dehiwala, Western Province
-                                    </p>
-                                    <p class="address-phone">+94 77 123 4567</p>
+                            {{-- Row 1: First + Last name --}}
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" name="first_name"
+                                        class="form-input @error('first_name') is-invalid @enderror"
+                                        value="{{ old('first_name', $address->first_name ?? '') }}" placeholder="John"
+                                        required>
+
+                                    @error('first_name')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+
                                 </div>
-                                <button type="button" class="address-edit-btn" onclick="editAddress(2)">
-                                    <img src="{{ asset('images/icons/edit.svg') }}"  alt="edit" class="address-edit-icon">
-                                </button>
+                                <div class="form-field">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" name="last_name"
+                                        class="form-input @error('first_name') is-invalid @enderror"
+                                        value="{{ old('last_name', $address->last_name ?? '') }}" placeholder="Silva"
+                                        required>
+
+                                    @error('last_name')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+
+                                </div>
                             </div>
-                        </label>
 
-                        <label class="address-add-new" onclick="toggleNewAddress()">
-                            <div class="address-add-icon">+</div>
-                            <span class="address-add-text">Add New Address</span>
-                        </label>
+                            {{-- Row 2: Phone + Email --}}
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label class="form-label">Phone Number</label>
+                                    <div class="phone-input-wrap">
+                                        <div class="phone-prefix">
+                                            <img src="{{ asset('images/icons/flag.svg') }}" alt="LK"
+                                                class="flag-icon">
+                                            <span>+94</span>
+                                        </div>
+                                        <input type="tel" name="phone"
+                                            class="form-input @error('phone') is-invalid @enderror"
+                                            value="{{ old('phone', $address->phone ?? '') }}" placeholder="77 123 4567"
+                                            required>
 
-                    </div>
-                </div>
-                {{-- @endauth --}}
-
-                <div class="checkout-card" id="newAddressForm">
-                    <h2 class="checkout-card-title">Contact Information</h2>
-
-                    <form id="shippingForm">
-
-                        {{-- Row 1: First + Last name --}}
-                        <div class="form-row">
-                            <div class="form-field">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-input" placeholder="John" required>
-                            </div>
-                            <div class="form-field">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-input"  placeholder="Silva" required>
-                            </div>
-                        </div>
-
-                        {{-- Row 2: Phone + Email --}}
-                        <div class="form-row">
-                            <div class="form-field">
-                                <label class="form-label">Phone Number</label>
-                                <div class="phone-input-wrap">
-                                    <div class="phone-prefix">
-                                        <img src="{{ asset('images/icons/flag.svg') }}" alt="LK" class="flag-icon">
-                                        <span>+94</span>
+                                        @error('phone')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
-                                    <input type="tel" class="form-input phone-field" placeholder="77 123 4567" required>
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label">Email Address</label>
+                                    <input type="email" name="email"
+                                        class="form-input @error('email') is-invalid @enderror"
+                                        value="{{ old('email', $address->email ?? '') }}" placeholder="you@example.com"
+                                        required>
+
+                                    @error('email')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
-                            <div class="form-field">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" class="form-input" placeholder="you@example.com" required>
+
+                            <hr class="form-divider">
+                            <h2 class="checkout-card-title">Delivery Address</h2>
+
+                            {{-- Row 3: City + Zip --}}
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label class="form-label">City</label>
+                                    <input type="city" name="city"
+                                        class="form-input @error('city') is-invalid @enderror"
+                                        value="{{ old('city', $address->city ?? '') }}" placeholder="you@example.com"
+                                        required>
+
+                                    @error('city')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="form-field">
+                                    <label class="form-label">Zip Code</label>
+                                    <input type="text" name="zip_code"
+                                        class="form-input @error('zip_code') is-invalid @enderror"
+                                        value="{{ old('zip_code', $address->zip_code ?? '') }}"
+                                        placeholder="you@example.com" required>
+
+                                    @error('zip_code')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             </div>
-                        </div>
 
-                        <hr class="form-divider">
-                        <h2 class="checkout-card-title">Delivery Address</h2>
-
-                        {{-- Row 3: City + Zip --}}
-                        <div class="form-row">
+                            {{-- Row 4: Street address full width --}}
                             <div class="form-field">
-                                <label class="form-label">City</label>
-                                <input type="text" class="form-input" placeholder="Colombo" required>
+                                <label class="form-label">Street Address</label>
+                                <input type="text" name="street_address"
+                                    class="form-input @error('street_address') is-invalid @enderror"
+                                    value="{{ old('street_address', $address->street_address ?? '') }}"
+                                    placeholder="you@example.com" required>
+
+                                @error('street_address')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                            <div class="form-field">
-                                <label class="form-label">Zip Code</label>
-                                <input type="text" class="form-input" placeholder="00300" required>
+
+                            {{-- ----buttons----- --}}
+                            <div class="checkout-btn-row">
+                                <a href="/cart" class="checkout-back-btn">
+                                    <img src="{{ asset('images/icons/arrow-left.svg') }}" alt="back"
+                                        class="checkout-next-icon">
+                                    Cart
+                                </a>
+                                <button type="submit" class="checkout-next-btn">
+                                    {{ $address ? 'Save & Continue' : 'Continue' }} to Payment
+                                    <img src="{{ asset('images/icons/arrow-right.svg') }}" alt="next"
+                                        class="checkout-next-icon">
+                                </button>
                             </div>
-                        </div>
+                        </form>
+                    </div>
 
-                        {{-- Row 4: Street address full width --}}
-                        <div class="form-field">
-                            <label class="form-label">Street Address</label>
-                            <input type="text" class="form-input" placeholder="123 Main Street, Apartment 4B" required>
-                        </div>
-
-                        {{-- Default address checkbox --}}
-                        <label class="default-address-check">
-                            <input type="checkbox" name="set_default">
-                            <span>Set as default shipping address</span>
-                        </label>
-
-                    </form>
                 </div>
-
-                
+                {{-- Order Summary --}}
+                @include('partials.order-summary')
 
             </div>
-            {{-- Order Summary --}}
-            @include('partials.order-summary')
-
-             {{-- payment btn --}}
-                <a href="/payment" class="checkout-next-btn">
-                    Go to Payment
-                    <img src="{{ asset('images/icons/arrow-right.svg') }}"  alt="next" class="checkout-next-icon">
-                </a>
         </div>
-    </div>
-</section>
+    </section>
 
 
 
-@endsection
-
-
-
-@section('scripts')
-<script>
-
-    // Show/hide new address form
-    function toggleNewAddress() {
-        const form = document.getElementById('newAddressForm');
-        form.classList.toggle('visible');
-    }
-
-    // Edit address — for now just shows the form
-    function editAddress(id) {
-        const form = document.getElementById('newAddressForm');
-        form.classList.add('visible');
-        // Later: fetch address data and fill the form fields
-    }
-
-    // Show login popup if not logged in
-    // Uncomment when auth is ready
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     @guest
-    //         openAuthPopup();
-    //     @endguest
-    // });
-
-</script>
 @endsection

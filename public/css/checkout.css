@@ -359,16 +359,6 @@
 }
 
 
-
-
-#newAddressForm {
-    display: none;
-}
-
-#newAddressForm.visible {
-    display: block;
-}
-
 /* ----------- forms ---------------------*/
 
 .form-row {
@@ -479,7 +469,7 @@
 .checkout-btn-row {
     display: flex;
     gap: 12px;
-    align-items: center;
+    align-items: center;    
 }
 
 .checkout-next-btn {
@@ -500,10 +490,7 @@
     flex: 1;
     justify-content: center;
     width: 100%;
-}
 
-.checkout-btn-row.checkout-next-btn {
-    width: 50%;
 }
 
 .checkout-next-btn:hover {
@@ -523,9 +510,9 @@
     align-items: center;
     gap: 6px;
     padding: 13px 20px;
-    background-color: transparent;
+    background-color: var(--color-white);
     color: var(--text-secondary);
-    border: 1.5px solid var(--bg-neutral-secondary);
+    border: 1.5px solid var(--color-brand-primary);
     border-radius: 8px;
     font-size: 0.9rem;
     font-weight: var(--font-weight-medium);
@@ -534,6 +521,7 @@
     cursor: pointer;
     transition: border-color 0.2s, color 0.2s;
     width: 100%;
+
 }
 
 .checkout-back-btn:hover {

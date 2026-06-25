@@ -10,119 +10,98 @@
 
 @section('content')
 
-<section class="cart-section">
-    <div class="container">
-        <h1 class="cart-page-title"> My Cart </h1>
+    <section class="cart-section">
+        <div class="container">
 
-        <div class="cart-layout">            
-            {{---------------- left cart items ---------------}}
-            <div class="cart-item-wrap">
-                
-                {{---------------- cart product 1 ---------------}}
-                <div class="cart-item">
-                    
-                    {{------- thumb images ------}}
-                    <div class="cart-item-img-wrap">
-                        <img src="{{ asset('images/products/product-1.jpg') }}" alt="product" class="cart-item-img">
-                    </div>
-                    
+            <h1 class="cart-page-title"> My Cart ( {{ $cartItems->count() }}) </h1>
 
-                    {{------- item info ------}}
-                    <div class="cart-item-info">
-                        <a href="/products/1" class="cart-item-name">
-                                ProBook Laptop 15 inch Intel i7 16GB RAM 512GB SSD
-                        </a>
-                        <span class="cart-item-sku">SKU: SP-001234</span>
-                            
-                        <div class="cart-item-actions">
-                            <button class="cart-action-btn cart-remove-btn">
-                                <img src="{{ asset('images/icons/trash.svg') }}" alt="remove" class="cart-action-icon">
-                                    <span>Remove</span>
-                            </button>
-                                    
-                            <button class="cart-action-btn cart-wishlist-btn">
-                                <img src="{{ asset('images/icons/wishlist.svg') }}" alt="wishlist" class="cart-action-icon">
-                                    <span>Move to Wishlist</span>
-                            </button>
-                        </div>            
-                    </div>
 
-                    <div class="cart-item-price-wrap">
-                        <div class="cart-item-price">Rs. 89,900</div>
-                            <div class="qty-wrap">
-                                <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-                                <input type="number" class="qty-input" value="1" min="1" max="99" readonly>
-                                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
+            @if ($cartItems->count() > 0)
+                <div class="cart-layout">
+                    {{-- -------------- left cart items ------------- --}}
+                    <div class="cart-item-wrap">
+
+                        {{-- -------------- cart product 1 ------------- --}}
+                        @foreach ($cartItems as $item)
+                            <div class="cart-item">
+
+                                {{-- ----- thumb images ---- --}}
+                                <div class="cart-item-img-wrap">
+                                    <img src="{{ asset('storage/' . $item->product->image) }}"
+                                        alt={{ $item->product->name }} class="cart-item-img">
+                                </div>
+
+
+                                {{-- ----- item info ---- --}}
+                                <div class="cart-item-info">
+                                    <a href="/products/{{ $item->product->id }}" class="cart-item-name">
+                                        {{ $item->product->name }}
+                                    </a>
+                                    <span class="cart-item-sku"> SKU:{{ $item->product->sku }}</span>
+
+                                    <div class="cart-item-actions">
+                                        <form action="{{ route('cart.remove', $item->id) }}" method="POST"
+                                            style="display:inline">
+
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button class="cart-action-btn cart-remove-btn">
+                                                <img src="{{ asset('images/icons/trash.svg') }}" alt="remove"
+                                                    class="cart-action-icon">
+                                                <span>Remove</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="cart-item-price-wrap">
+                                    <div class="cart-item-price">Rs. {{ $item->product->price }}</div>
+
+                                    <form action="{{ route('cart.update', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+
+                                        <div class="qty-wrap">
+                                            <button type="submit" class="qty-btn" name="quantity"
+                                                value={{ $item->quantity - 1 }}
+                                                {{ $item->quantity <= 1 ? 'disabled' : '' }}>
+                                                − </button>
+
+                                            <input type="number" class="qty-input" value={{ $item->quantity }}
+                                                min="1" max="99" readonly>
+                                            <button type="submit" name="quantity" class="qty-btn"
+                                                value="{{ $item->quantity + 1 }}">+</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
+                        @endforeach
+                    </div>
+
+
+                    {{-- Order Summary --}}
+                    @include('partials.order-summary')
+                    <div>
+                        <a href="/checkout" class="checkout-btn">
+                            Continue to Checkout
+                            <img src="{{ asset('images/icons/arrow-right.svg') }}" alt="next"
+                                class="checkout-next-icon">
+                        </a>
                     </div>
                 </div>
+            @else
+                {{-- Empty cart state --}}
+                <div class="text-center py-5">
+                    <h3 class="mt-3 text-muted">Your cart is empty</h3>
+                    <p class="text-muted">Add some products to get started!</p>
+                    <a href="/products" class="btn btn-primary mt-2">
+                        Shop Now
+                    </a>
+                </div>
+            @endif
 
-                {{---------------- cart product 2 ---------------}}
-                <div class="cart-item">
-                    
-                    {{------- thumb images ------}}
-                    <div class="cart-item-img-wrap">
-                        <img src="{{ asset('images/products/product-1.jpg') }}" alt="product" class="cart-item-img">
-                    </div>
-                    
-
-                    {{------- item info ------}}
-                    <div class="cart-item-info">
-                        <a href="/products/1" class="cart-item-name">
-                                ProBook Laptop 15 inch Intel i7 16GB RAM 512GB SSD
-                        </a>
-                        <span class="cart-item-sku">SKU: SP-001234</span>
-                            
-                        <div class="cart-item-actions">
-                            <button class="cart-action-btn cart-remove-btn">
-                                <img src="{{ asset('images/icons/trash.svg') }}" alt="remove" class="cart-action-icon">
-                                    <span>Remove</span>
-                            </button>
-                                    
-                            <button class="cart-action-btn cart-wishlist-btn">
-                                <img src="{{ asset('images/icons/wishlist.svg') }}" alt="wishlist" class="cart-action-icon">
-                                    <span>Move to Wishlist</span>
-                            </button>
-                        </div>            
-                    </div>
-
-                    <div class="cart-item-price-wrap">
-                        <div class="cart-item-price">Rs. 89,900</div>
-                            <div class="qty-wrap">
-                                <button class="qty-btn" onclick="changeQty(this, -1)">−</button>
-                                <input type="number" class="qty-input" value="1" min="1" max="99" readonly>
-                                <button class="qty-btn" onclick="changeQty(this, 1)">+</button>
-                            </div>
-                    </div>
-                </div>    
-            </div>
-            
-            
-            {{-- Order Summary --}}
-            @include('partials.order-summary')
-            <div>
-                <a href="/checkout" class="checkout-btn">
-                    Continue to Checkout
-                <img src="{{ asset('images/icons/arrow-right.svg') }}"  alt="next" class="checkout-next-icon">
-                </a>
-            </div>
-
-            
         </div>
-        
-    </div>
-</section>
+    </section>
 
-@endsection
-
-@section('scripts')
-<script>
-    function changeQty(btn, amount) {
-        const input = btn.parentElement.querySelector('.qty-input');
-        let val = parseInt(input.value) + amount;
-        if (val < 1) val = 1;
-        if (val > 99) val = 99;
-        input.value = val;
-    }
-</script>
 @endsection

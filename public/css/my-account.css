@@ -393,6 +393,13 @@
     margin: 0;
 }
 
+.pw-title{
+    margin: 40px 0 16px 0;
+    font-size: 1.2rem;
+}
+
+
+
 /* ---------- orders -------------*/
 .orders-list {
     display: flex;
@@ -607,6 +614,17 @@
 
 .order-product-info {
     flex: 1;
+}
+
+.order-product-name-link {
+    text-decoration: none;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.order-product-name-link:hover {
+    color: var(--color-brand-primary);
+    text-decoration: underline;
 }
 
 .order-product-item .add-to-cart-btn {
