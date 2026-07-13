@@ -532,4 +532,12 @@
             form.classList.toggle('d-none');
         }
     </script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab');
+        if (tab) {
+            const link = document.querySelector('[onclick*="showTab(\'' + tab + '\'"]');
+            if (link) showTab(tab, link);
+        }
+    </script>
 @endsection

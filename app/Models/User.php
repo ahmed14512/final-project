@@ -22,7 +22,6 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'role',
         'status',
     ];
 
@@ -40,18 +39,53 @@ class User extends Authenticatable
         ];
     }
 
-    public function isAdmin()
+    public function roles()
     {
-        return $this->role === 'admin';
+        return $this->belongsToMany(Role::class);
     }
 
-    public function isCustomer()
+    public function hasRole(string $role): bool
     {
-        return $this->role === 'customer';
+        return $this->roles->pluck('name')->contains($role);
     }
 
-    public function orders()
+    public function hasAnyRole(array $roles): bool
+    {
+        return $this->roles->pluck('name')
+                    ->intersect($roles)
+                    ->isNotEmpty();
+
+    }
+
+    public function isAdmin() : bool
+    {
+        return $this->hasAnyRole(['admin', 'super_admin']);
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->hasRole('customer');
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->hasRole('staff');
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->hasRole('super_admin');
+    }
+
+
+public function getRoleNameAttribute(): string
+{
+    return $this->roles->first()?->name ?? 'customer';
+}
+
+public function orders()
 {
     return $this->hasMany(Order::class);
 }
+
 }

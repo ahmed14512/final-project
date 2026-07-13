@@ -56,15 +56,13 @@
                         </label>
 
                         <select name="role" class="form-select @error('role') is-invalid @enderror" required>
-                            <option value="customer" {{ old('role') == 'customer' ? 'selected' : '' }}>
-                                Customer
-                            </option>
-                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>
-                                Admin
-                            </option>
-                            <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>
-                                Staff
-                            </option>
+                            <option value="">Select Role</option>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->name }}"
+                                    {{ old('role', $user->role_name ?? '') == $role->name ? 'selected' : '' }}>
+                                    {{ $role->display_name }}
+                                </option>
+                            @endforeach
                         </select>
 
                         @error('role')

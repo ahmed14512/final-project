@@ -37,9 +37,12 @@
 
 
                             <td>
-                                @if ($user->role === 'admin')
+                                @php $roleName = $user->role_name; @endphp
+                                @if ($roleName === 'super_admin')
+                                    <span class="badge bg-dark">Super Admin</span>
+                                @elseif($roleName === 'admin')
                                     <span class="badge bg-danger">Admin</span>
-                                @elseif($user->role === 'staff')
+                                @elseif($roleName === 'staff')
                                     <span class="badge bg-warning">Staff</span>
                                 @else
                                     <span class="badge bg-info">Customer</span>

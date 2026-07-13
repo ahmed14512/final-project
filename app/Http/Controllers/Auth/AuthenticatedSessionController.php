@@ -22,26 +22,28 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-       $request->authenticate();
+   public function store(LoginRequest $request): RedirectResponse
+{
+    $request->authenticate();
 
-    // Check if user is blocked
-    if (auth()->user()->status == 0) {
+    $user = auth()->user()->loadMissing('roles');
+
+    if ($user->status == 0) {
         auth()->logout();
         return redirect()->back()
                          ->with('error', 'Your account has been blocked.');
     }
 
+    if ($user->hasAnyRole(['admin', 'super_admin', 'staff'])) {
+        auth()->logout();
+        return redirect()->back()->withErrors([
+            'email' => 'Please use the admin login at /admin/login',
+        ]);
+    }
+
     $request->session()->regenerate();
-
-    // Redirect based on role
-    if (auth()->user()->role === 'admin') {
-        return redirect()->intended('/admin/dashboard');
-    }
-
     return redirect()->intended('/');
-    }
+}
 
     /**
      * Destroy an authenticated session.

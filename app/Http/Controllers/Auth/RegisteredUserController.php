@@ -44,10 +44,15 @@ class RegisteredUserController extends Controller
             'status'   => 1,
         ]);
 
+         $role = \App\Models\Role::where('name', 'customer')->first();
+            if ($role) {
+                $user->roles()->attach($role->id);
+            }
+
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect('/');
     }
 }

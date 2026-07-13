@@ -18,7 +18,8 @@ class UserController extends Controller
 
     public function create(){
 
-        return view ('admin.users.create');
+        $roles = \App\Models\Role::all();
+        return view('admin.users.create', compact('roles'));
     }
 
     
@@ -37,10 +38,12 @@ class UserController extends Controller
             'name'      => $request ->name,
             'email'     => $request ->email,
             'phone'    => $request->phone,
-            'role'     => $request->role,
             'status'   => $request->status,
             'password' => Hash::make($request->password),
         ]);
+
+        $role = Role::where('name', $request->role)->first();
+        $user->roles()->attach($role->id);
 
         return redirect()->route('admin.users.index')
                         ->with('success', 'User created successfully!');
@@ -48,10 +51,18 @@ class UserController extends Controller
 
 
     public function edit(User $user){
-        return view('admin.users.edit', compact('user'));
+        $roles = \App\Models\Role::all();
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user){
+
+    if ($user->isSuperAdmin() &&
+        !auth()->user()->isSuperAdmin()) {
+        return redirect()->route('admin.users.index')
+                         ->with('error',
+                           'You cannot edit a Super Administrator.');
+    }
         
         $request -> validate([
             'name'     => 'required|string|max:255',
@@ -66,7 +77,6 @@ class UserController extends Controller
             'name'   => $request->name,
             'email'  => $request->email,
             'phone'  => $request->phone,
-            'role'   => $request->role,
             'status' => $request->status,
         ];
 
@@ -75,6 +85,9 @@ class UserController extends Controller
         }
 
         $user->update($data);
+
+            $role = Role::where('name', $request->role)->first();
+            $user->roles()->sync([$role->id]);
 
         return redirect()->route('admin.users.index')
                         ->with('success', 'User updated successfully!');
@@ -88,21 +101,16 @@ class UserController extends Controller
                         ->with('error', ' You cannot delete yourself!');
         }
 
+         if ($user->isSuperAdmin() &&
+        !auth()->user()->isSuperAdmin()) {
+        return redirect()->route('admin.users.index')
+                         ->with('error',
+                           'You cannot delete a Super Administrator.');
+    }
+
         $user->delete();
 
          return redirect()->route('admin.users.index')
                         ->with('success', 'User deleted successfully!');
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

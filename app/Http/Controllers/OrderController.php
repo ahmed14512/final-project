@@ -9,7 +9,6 @@ class OrderController extends Controller
 {
    public function success(Order $order)
     {
-        // Make sure customers can only see their own order
         if ($order->user_id !== auth()->id()) {
             abort(403);
         }

@@ -109,14 +109,15 @@
                                 </li>
 
                                 <li>
-                                    <a class="dropdown-item account-menu-item" href="/my-account/orders">
+                                    <a class="dropdown-item account-menu-item"
+                                        href="{{ route('account.index') }}?tab=orders">
                                         <img src="{{ asset('images/icons/order-status.svg') }}" alt=""
                                             class="account-menu-icon">
                                         Order Status
                                     </a>
                                 </li>
 
-                                @if (Auth::user()->role === 'admin')
+                                @if (Auth::user()->isAdmin())
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
@@ -224,7 +225,7 @@
 
                         <div class="action-btn-separator"></div>
 
-                        <a href="/my-account/orders" class="btm-nav-action-btn">
+                        <a href="{{ route('account.index') }}?tab=orders" class="btm-nav-action-btn">
                             <img src="{{ asset('images/icons/order.svg') }}" alt="order-status"
                                 class="action-btn-icon">
                             <span>Order Status</span>
@@ -416,8 +417,11 @@
             btn.classList.toggle('open', !isOpen);
         }
     </script>
+
+    <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     @include('partials.alerts')
     @yield('scripts')
 </body>
+
 
 </html>
