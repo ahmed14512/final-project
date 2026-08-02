@@ -15,4 +15,14 @@ class OrderController extends Controller
 
         return view('pages.order-success', compact('order'));
     }
+
+    public function invoice(Order $order)
+    {
+        if ($order->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $order->load('items');
+        return view('pages.invoice', compact('order'));
+    }
 }

@@ -9,9 +9,7 @@ use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //---------------------------------------index
     public function index()
     {
        $categories = Category::latest()->get();
@@ -20,9 +18,7 @@ class CategoryController extends Controller
             compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    //---------------------------------------create
     public function create()
     {
         return view ('admin.categories.create');
@@ -63,18 +59,14 @@ class CategoryController extends Controller
                             -> with ('success','Category created successfully!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    //---------------------------------------edit
     public function edit(Category $category)
     {
         return view ('admin.categories.edit',
                     compact ('category'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    //---------------------------------------update
     public function update(Request $request, Category $category)
     {
         $request -> validate ([

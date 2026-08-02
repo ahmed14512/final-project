@@ -31,13 +31,13 @@
                     @enderror
                 </div>
 
-                {{-- Description --}}
+                {{-- description --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Description</label>
                     <textarea name="description" class="form-control" rows="3">{{ old('description', $brand->description) }}</textarea>
                 </div>
 
-                {{-- Current image --}}
+                {{-- current image --}}
                 @if ($brand->logo)
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Current Logo</label>
@@ -57,7 +57,7 @@
                     </small>
                 </div>
 
-                {{-- Status --}}
+                {{-- stauyts --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Status</label>
                     <select name="status" class="form-select">
@@ -70,7 +70,7 @@
                     </select>
                 </div>
 
-                {{-- Buttons --}}
+                {{-- btn --}}
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save me-1"></i> Update Brand
                 </button>

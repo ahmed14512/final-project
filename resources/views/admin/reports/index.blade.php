@@ -98,6 +98,41 @@
         </div>
     </div>
 
+    {{-- Top 5 Products --}}
+<div class="card mt-4">
+    <div class="card-header">
+        <h3 class="card-title">Top 5 Products</h3>
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product Name</th>
+                    <th>Qty Sold</th>
+                    <th>Total Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($topProducts as $i => $item)
+                <tr>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $item->product_name }}</td>
+                    <td>{{ $item->total_qty }}</td>
+                    <td>Rs. {{ number_format($item->total_revenue) }}</td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" class="text-center text-muted">
+                        No products found for this period.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</div>
+
 @endsection
 
 @section('css')

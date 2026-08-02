@@ -8,9 +8,7 @@ use Illuminate\Support\Str;
 
 class BrandController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    //---------------------------------------index
     public function index()
     {
         $brands = Brand::latest()->get();
@@ -19,17 +17,13 @@ class BrandController extends Controller
                     compact('brands'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    //---------------------------------------create brand
     public function create()
     {
          return view ('admin.brands.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    //---------------------------------------save
     public function store(Request $request)
     {
        $request -> validate([
@@ -59,18 +53,14 @@ class BrandController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+//---------------------------------------edit
     public function edit(Brand $brand)
     {
         return view ('admin.brands.edit',
                     compact('brand'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+//---------------------------------------update
     public function update(Request $request, Brand $brand)
     {
         $request -> validate([
@@ -99,9 +89,7 @@ class BrandController extends Controller
                         -> with ('success','Brand updated successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+//---------------------------------------delete
     public function destroy(Brand $brand)
     {
         $brand -> delete();

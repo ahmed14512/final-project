@@ -7,13 +7,21 @@
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
 @endsection
 
+@section('breadcrumb')
+    <li class="breadcrumb-item ">
+        <a class="text-decoration-none" href="{{ route('home') }}">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Products</li>
+@endsection
+
 @section('content')
 
-    {{-- Banner --}}
+    {{-- banner --}}
     <section class="products-banner-section">
         <div class="container">
             <div class="products-banner">
-                <img src="{{ asset('images/banners/products-banner.jpg') }}" alt="products-banner" class="products-banner-img">
+                <img src="{{ asset('images/banners/products-banner.jpg') }}" alt="products-banner"
+                    class="products-banner-img">
             </div>
         </div>
     </section>
@@ -22,7 +30,7 @@
         <div class="container">
             <div class="products-layout">
 
-                {{-- left — Filter sidebar --}}
+                {{-- ------------------------ filters ----------------- --}}
                 <aside class="filter-sidebar" id="filter-sidebar">
 
                     <div class="filter-header">
@@ -36,7 +44,7 @@
 
                     <form id="filterForm" method="GET">
 
-                        {{-- Categories --}}
+                        {{-- categories --}}
                         <div class="filter-group">
                             <div class="filter-group-title" onclick="toggleFilterGroup(this)">
                                 <span>Categories</span>
@@ -54,7 +62,7 @@
                             </div>
                         </div>
 
-                        {{-- Brands --}}
+                        {{-- brands --}}
                         <div class="filter-group">
                             <div class="filter-group-title" onclick="toggleFilterGroup(this)">
                                 <span>Brands</span>
@@ -76,12 +84,12 @@
 
                     </form>
                 </aside>
-                {{-- end filter-sidebar --}}
 
-                {{-- RIGHT — Products main --}}
+
+                {{-- main --}}
                 <div class="products-main">
 
-                    {{-- count + sort --}}
+
                     <div class="products-topbar">
                         <p class="products-count">
                             Showing {{ $products->count() }} of {{ $products->total() }} products
@@ -103,7 +111,7 @@
                         </div>
                     </div>
 
-                    {{-- Product Grid --}}
+                    {{-- product display --}}
                     <div class="products-grid" id="productsGrid">
 
                         @forelse($products as $product)
@@ -113,9 +121,6 @@
                                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
                                             class="card-img">
                                     </a>
-                                    @if ($product->is_new)
-                                        <span class="label-new">NEW</span>
-                                    @endif
                                 </div>
 
                                 <div class="card-body">
@@ -130,15 +135,21 @@
                                     </a>
 
                                     <div class="card-footer-row">
-                                        <form action="{{ route('cart.add') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="add-to-cart-btn">
-                                                <img src="{{ asset('images/icons/cart-btn.svg') }}" alt="cart"
-                                                    class="cart-btn-icon">
-                                                <span>Add to Cart</span>
+                                        @if ($product->stock > 0)
+                                            <form action="{{ route('cart.add') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <button type="submit" class="add-to-cart-btn">
+                                                    <img src="{{ asset('images/icons/cart-btn.svg') }}" alt="cart"
+                                                        class="cart-btn-icon">
+                                                    <span>Add to Cart</span>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button class="out-of-stock-btn" disabled style="cursor:not-allowed;">
+                                                <span>Out of Stock</span>
                                             </button>
-                                        </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +160,7 @@
                         @endforelse
 
                     </div>
-                    {{-- END products-grid --}}
+
 
                     {{-- Pagination --}}
                     <div class="products-pagination">
@@ -159,7 +170,7 @@
                 </div>
 
             </div>
-            {{-- END products-layout --}}
+
         </div>
     </section>
 

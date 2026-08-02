@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    // View cart
+    //------------------- View cart
     public function index()
     {
         $cartItems = Cart::where('user_id', auth()->id())
@@ -20,28 +20,30 @@ class CartController extends Controller
         $shipping   = 350;
         $grandTotal = $total + $shipping;
 
+        //check if there are any out of stock products
+        $canCheckout = $cartItems->every(fn($i) => $i->product->stock > 0);
+
         return view('pages.cart', compact(
-            'cartItems', 'total', 'shipping', 'grandTotal'
+            'cartItems', 'total', 'shipping', 'grandTotal', 'canCheckout'
         ));
     }
 
-    //------------------add — add product to cart
-
+    //------------------add product to cart
     public function add(Request $request)
 {
     if (!auth()->check()) {
-        $back = url()->previous();
+    
+    // guest user needs to login to add to cart
+    session(['url.intended' => url()->previous()]);
+    
+    return redirect()->route('login')
+                     ->with('error', 'Please login to add to cart!');
+}
 
-        // Remove any existing login_required param
-        // before adding it fresh
-        $back = preg_replace('/([&?])login_required=\d+/', '', $back);
-        $back = rtrim($back, '?&');
-
-        $sep = str_contains($back, '?') ? '&' : '?';
-        return redirect($back . $sep . 'login_required=1');
-    }
-
+    //fin the product
     $product  = Product::findOrFail($request->product_id);
+    
+    //check if the product already in the cart?
     $cartItem = Cart::where('user_id', auth()->id())
                     ->where('product_id', $product->id)
                     ->first();
@@ -50,6 +52,7 @@ class CartController extends Controller
         return redirect()->back()->with('already_in_cart', true);
     }
 
+    //logged user add ti cart
     Cart::create([
         'product_id' => $product->id,
         'user_id'    => auth()->id(),
@@ -59,15 +62,20 @@ class CartController extends Controller
     return redirect()->back()->with('added_to_cart', true);
 }
 
-    // Buy Now
+    // ----------------- Buy Now
     public function buyNow(Request $request)
     {
         if (!auth()->check()) {
-            return redirect()->back()
-                             ->with('guest_add_attempt', true);
-        }
+    
+    // guest user needs to login to add to cart
+    session(['url.intended' => url()->previous()]);
+    
+    return redirect()->route('login')
+                     ->with('error', 'Please login to add to cart!');
+}
 
         $product  = Product::findOrFail($request->product_id);
+        
         $cartItem = Cart::where('user_id', auth()->id())
                         ->where('product_id', $product->id)
                         ->first();
@@ -83,7 +91,7 @@ class CartController extends Controller
         return redirect()->route('cart.index');
     }
 
-    // Update quantity
+    // ---------------------Update quantity
     public function update(Request $request, Cart $cart)
     {
         $request->validate([
@@ -96,7 +104,7 @@ class CartController extends Controller
                          ->with('success', 'Cart updated!');
     }
 
-    // Remove single item
+    // -------------------Remove single item
     public function remove(Cart $cart)
     {
         $cart->delete();

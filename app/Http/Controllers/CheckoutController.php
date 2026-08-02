@@ -7,51 +7,116 @@ use App\Models\Cart;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmationMail;
 
 class CheckoutController extends Controller
-{        
+{    
+    //-------------------------------index    
      public function index() {
         
-          $cartItems= $this -> getCartData();
+        $cartData= $this->getCartData();
 
-          $address = Address::where('user_id', auth()->id())->first();
-          return view('pages.checkout', 
-                    array_merge($cartItems, compact('address')));
+        // blovk out of stock products
+        $hasOutOfStock = $cartData['cartItems']
+                     ->contains(fn($i) => $i->product->stock == 0);
+
+             if ($hasOutOfStock) {
+                return redirect()->route('cart.index')
+                        ->with('error',
+                        'Remove out of stock items before checkout.');
+    }
+
+        $address = Address::where('user_id', auth()->id())->first();
+        $user      = auth()->user();
+
+        return view('pages.checkout', 
+                    array_merge($cartData, compact('address', 'user')));
      }
 
+     //-------------------------------save address  
      public function saveAddress(Request $request){
           
-          $request->validate([
-               'first_name'        => 'required|string|max:255',
-               'last_name'         => 'required|string|max:255',
-               'phone'             => 'required|string|max:9',
-               'email'             => 'required|string',
-               'city'              => 'required|string|max:255',
-               'zip_code'          => 'required|string|max:20',
-               'street_address'  => 'required|string|max:255',
+        $request->validate([
+            'name'     => [
+                    'required',
+                    'string',
+                    'max:255',
+                    'regex:/^[a-zA-Z\s]+$/',
+                ],
+
+
+            'phone'     => [
+                'required',
+                'digits:10',
+            ],
+
+            'email'     => [
+                'required',
+                'email:rfc',
+                'max:255',
+            ],
+        
+            'city'      => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/',
+            ],
+
+            'zip_code'       => [
+                'required',
+                'digits:5',
+            ],
+
+            'street_address' => [
+                'required',
+                'string',
+                'max:500',
+            ],
+    ], 
+        [
+        'name.required' => 'Name is required',
+        'name.regex'    => 'Name must contain letters only',
+        'phone.required'      => 'Phone number is required',
+        'phone.digits'        => 'Phone number must be exactly 10 digits',
+        'email.required'      => 'Email address is required',
+        'email.email'         => 'Please enter a valid email address e.g. user@example.com',
+        'city.required'       => 'City is required',
+        'city.regex'          => 'City name must contain letters only',
+        'zip_code.required'   => 'Zip code is required',
+        'zip_code.digits'     => 'Zip code must be exactly 5 digits.',
+        'street_address.required' => 'Street address is required.', 
           ]);
 
           Address::updateOrCreate(
                [ 'user_id' => auth()->id()],
           $request->only([
-               'first_name', 'last_name', 'phone' , 'email' , 'city', 'zip_code', 'street_address'
+               'name', 'phone' , 'email' , 'city', 'zip_code', 'street_address'
           ])         
           );
 
           return redirect()->route('payment.index');
      }
 
+     //-------------------------------payment   
      public function payment() {
         
-          $cartItems= $this->getCartData();
-          return view('pages.payment', $cartItems);
+          $cartData= $this->getCartData();
+          return view('pages.payment', $cartData);
      }
 
+
+     //------------------------------------------store   
      public function store(Request $request)
     {
-        $cart = Cart::where('user_id', auth()->id())
-                    ->with('product')
-                    ->get();
+        $cartData = $this->getCartData();
+    
+        $cart     = $cartData['cartItems'];
+        $subtotal = $cartData['total'];
+        $shipping = $cartData['shipping'];
+        $total    = $cartData['grandTotal'];
+
 
         if ($cart->isEmpty()) {
             return redirect()->route('cart.index')
@@ -65,18 +130,11 @@ class CheckoutController extends Controller
                              ->with('error', 'Please add a shipping address first.');
         }
 
-        $subtotal = $cart->sum(function ($item) {
-            return $item->product->price * $item->quantity;
-        });
 
-        $shipping = 350;
-        $total = $subtotal + $shipping;
-
-        // Create the order — snapshot of address at this moment
+        // order snapshot
         $order = Order::create([
             'user_id'        => auth()->id(),
-            'first_name'     => $address->first_name,
-            'last_name'      => $address->last_name,
+            'name'           => $address->name,
             'phone'          => $address->phone,
             'email'          => $address->email,
             'city'           => $address->city,
@@ -88,8 +146,8 @@ class CheckoutController extends Controller
             'status'         => 'pending',
         ]);
 
-        // Create one order_item row per cart item —
-        // snapshot of product name/price at this moment
+
+        // product snapshot
         foreach ($cart as $item) {
             OrderItem::create([
                 'order_id'     => $order->id,
@@ -101,21 +159,25 @@ class CheckoutController extends Controller
             ]);
         }
 
-        // Clear the cart — order is now permanent,
-        // cart's job is done
+
+        // delete the cart
         Cart::where('user_id', auth()->id())->delete();
+
+        // order confirmation email
+            Mail::to($order->email)
+            ->send(new OrderConfirmationMail($order));
 
         return redirect()->route('order.success', $order->id);
     }
 
-
+    //-------------------------------cart data (from Cart contrl)   
      private function getCartData(){
-          //get cart items for logged users
+          
           $cartItems = Cart::where('user_id', auth()->id())
                               ->with('product')
                               ->get();
 
-          //calculate total
+ 
           $total = $cartItems -> sum(function($item){
                     return $item->product->price * $item->quantity;
           });

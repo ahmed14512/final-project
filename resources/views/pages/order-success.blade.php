@@ -12,7 +12,7 @@
         <div class="container">
             <div class="success-card">
 
-                {{-- Success icon --}}
+                {{-- success uimage --}}
                 <div class="success-icon-wrap">
                     <img src="{{ asset('images/icons/success.svg') }}" alt="success" class="success-icon">
                 </div>
@@ -22,7 +22,7 @@
                     Thank you for shopping with SmartPickz.
                 </p>
 
-                {{-- Order number --}}
+                {{-- orer number --}}
                 <div class="success-order-num">
                     <span class="success-order-label">Order Number</span>
                     <span class="success-order-val">#{{ $order->order_number }}</span>
@@ -33,12 +33,12 @@
                     You can track your order from your account dashboard.
                 </p>
 
-                {{-- Buttons --}}
+                {{-- btns --}}
                 <div class="success-btns">
                     <a href="/products" class="success-btn-primary">
                         Continue Shopping
                     </a>
-                    <a href="/orders" class="success-btn-outline">
+                    <a href="{{ route('account.index') }}?tab=orders" class="success-btn-outline">
                         View My Orders
                     </a>
                 </div>

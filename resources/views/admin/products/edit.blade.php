@@ -33,7 +33,7 @@
                 {{-- Description --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Description</label>
-                    <textarea name="description" class="form-control" rows="4">{{ old('description', $product->description) }}</textarea>
+                    <textarea name="description" id="description" class="form-control" rows="5">{{ old('description', $product->description) }}</textarea>
                 </div>
 
                 {{-- SKU --}}
@@ -134,10 +134,10 @@
                             @foreach ($product->images as $thumb)
                                 <div class="position-relative">
                                     <img src="{{ asset('storage/' . $thumb->image) }}" alt="thumbnail" width="80"
-                                            class="rounded border">
+                                        class="rounded border">
                                 </div>
                             @endforeach
-                        
+
                         </div>
                     </div>
                 @endif
@@ -220,4 +220,23 @@
 
 @section('js')
     @include('admin.partials.alerts')
+
+    <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#description'), {
+                toolbar: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'blockQuote', '|',
+                    'undo', 'redo'
+                ],
+                placeholder: 'Enter product description...',
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

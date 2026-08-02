@@ -10,13 +10,13 @@ use Illuminate\View\View;
 
 class AdminLoginController extends Controller
 {
-    // Show the admin login form
+    //admin login form
     public function create(): View
     {
         return view('auth.admin-login');
     }
 
-    // Handle admin login attempt
+    // Handle admin login
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -35,7 +35,7 @@ class AdminLoginController extends Controller
 
         $user = Auth::user()->loadMissing('roles');
 
-        // Block non-admin/staff from using this login page
+        // staff form using this login page
         if (!$user->hasAnyRole(['admin', 'super_admin', 'staff'])) {
             Auth::logout();
             return back()->withErrors([
@@ -43,7 +43,7 @@ class AdminLoginController extends Controller
             ])->onlyInput('email');
         }
 
-        // Block accounts with status = 0
+        // blovked account
         if ($user->status == 0) {
             Auth::logout();
             return back()->withErrors([
@@ -55,7 +55,7 @@ class AdminLoginController extends Controller
         return redirect()->intended('/admin/dashboard');
     }
 
-    // Logout from admin panel
+    // Logout 
     public function destroy(Request $request): RedirectResponse
     {
         Auth::logout();

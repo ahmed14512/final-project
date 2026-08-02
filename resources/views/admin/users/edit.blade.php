@@ -45,7 +45,14 @@
                 {{-- Phone --}}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Phone</label>
-                    <input type="text" name="phone" class="form-control" value="{{ old('phone', $user->phone) }}">
+                    <input type="text" name="phone" id="phone"
+                        class="form-control @error('phone') is-invalid @enderror"
+                        value="{{ old('phone', $user->phone ?? '') }}" placeholder="0771234567" maxlength="10"
+                        inputmode="numeric">
+                    @error('phone')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="text-muted">Enter exactly 10 digits. Example: 0771234567</small>
                 </div>
 
                 {{-- Role + Status --}}
@@ -56,7 +63,7 @@
                             <option value="">Select Role</option>
                             @foreach ($roles as $role)
                                 <option value="{{ $role->name }}"
-                                    {{ old('role', $user->role_name ?? '') == $role->name ? 'selected' : '' }}>
+                                    {{ old('role', $user->roles->first()?->name) == $role->name ? 'selected' : '' }}>
                                     {{ $role->display_name }}
                                 </option>
                             @endforeach
@@ -82,19 +89,35 @@
                         <label class="form-label fw-semibold">
                             New Password
                         </label>
-                        <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                            placeholder="Leave empty to keep current">
-                        @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <div class="input-group">
+                            <input type="password" name="password" id="password"
+                                class="form-control @error('password') is-invalid @enderror"
+                                placeholder="Min 8 chars, letters and numbers">
+                            <button type="button" class="btn btn-outline-secondary"
+                                onclick="togglePassword('password', 'eyeIcon1')">
+                                <i class="fas fa-eye" id="eyeIcon1"></i>
+                            </button>
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <small class="text-muted">
+                            Minimum 8 characters with letters and numbers. Example: Admin123
+                        </small>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label fw-semibold">
                             Confirm New Password
                         </label>
-                        <input type="password" name="password_confirmation" class="form-control"
-                            placeholder="Leave empty to keep current">
+                        <div class="input-group">
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                class="form-control" placeholder="Re-enter password">
+                            <button type="button" class="btn btn-outline-secondary"
+                                onclick="togglePassword('password_confirmation', 'eyeIcon2')">
+                                <i class="fas fa-eye" id="eyeIcon2"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -113,4 +136,39 @@
 
 @section('js')
     @include('admin.partials.alerts')
+
+    <script>
+        // password eye
+        function togglePassword(fieldId, iconId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(iconId);
+
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // ── Phone number 
+        const phoneInput = document.getElementById('phone');
+
+        phoneInput.addEventListener('keydown', function(e) {
+            const allowed = [
+                'Backspace', 'Delete', 'Tab',
+                'ArrowLeft', 'ArrowRight', 'Home', 'End'
+            ];
+            if (!allowed.includes(e.key) && !/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        phoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+    </script>
 @endsection

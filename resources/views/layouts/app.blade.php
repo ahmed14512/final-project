@@ -3,9 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('Title', 'Home')</title>
+
+    {{-- favicon --}}
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
     {{-- CSS --}}
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -60,11 +63,11 @@
 
                     {{-- search --}}
                     <div class="custom-search flex-lg-grow-1">
-                        <form action="{{ route('products.index') }}" method="GET" class="d-flex w-100">
-                            <input type="text" name="search" class="form-control-lg search-input"
-                                placeholder="Search Products">
-                            <button type="submit" class="btn search-btn">
-                                <img src="{{ asset('images/icons/search.svg') }}" alt="search" class="btn-search">
+                        <form action="{{ route('products.index') }}" method="GET" class="custom-search">
+                            <input type="text" name="search" class="search-input" placeholder="Search products..."
+                                value="{{ request('search') }}" autocomplete="off">
+                            <button type="submit" class="search-btn">
+                                <img src="{{ asset('images/icons/search.svg') }}" alt="search" class="search-icon">
                             </button>
                         </form>
                     </div>
@@ -200,30 +203,18 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="btm-nav-link">Appliances</a>
-                        </li>
+                            @foreach ($navBtmCategories ?? [] as $category)
+                        <li>
+                            <a class="btm-nav-link" href="/products?category[]={{ $category->id }}">
 
-                        <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="btm-nav-link">Computers & Tablets</a>
+                                <span>{{ $category->name }}</span>
+                            </a>
                         </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="btm-nav-link">Mobile Phones</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="btm-nav-link">Audio & Headphones</a>
+                        @endforeach
                         </li>
                     </ul>
 
                     <div class="d-flex align-items-center">
-
-                        <a href="#" class="btm-nav-action-btn">
-                            <img src="{{ asset('images/icons/help.svg') }}" alt="help" class="action-btn-icon">
-                            <span>Help Center</span>
-                        </a>
-
-                        <div class="action-btn-separator"></div>
 
                         <a href="{{ route('account.index') }}?tab=orders" class="btm-nav-action-btn">
                             <img src="{{ asset('images/icons/order.svg') }}" alt="order-status"
@@ -235,6 +226,16 @@
             </div>
         </div>
     </nav>
+
+    @hasSection('breadcrumb')
+        <div class="container mt-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @yield('breadcrumb')
+                </ol>
+            </nav>
+        </div>
+    @endif
 
     @yield('content')
 
@@ -256,48 +257,48 @@
                 {{-- services --}}
                 <div class="col-12 col-sm-6 col-lg footer-col">
                     <div class="footer-col-title" onclick="toggleCol(this)">
-                        services
+                        Services
                         <button class="footer-col-toggle" aria-label="Toggle">
                             <img src="{{ asset('images/icons/arrow.svg') }}" class="arrow-icon" alt="arrow">
                         </button>
                     </div>
                     <ul class="footer-links">
-                        <li><a href="#">Design</a></li>
-                        <li><a href="#">Development</a></li>
-                        <li><a href="#">Branding</a></li>
-                        <li><a href="#">Consulting</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Return & Refund Policy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Purchase Protection</a></li>
                     </ul>
                 </div>
 
                 {{-- links --}}
                 <div class="col-12 col-sm-6 col-lg footer-col">
                     <div class="footer-col-title" onclick="toggleCol(this)">
-                        services
+                        Useful Links
                         <button class="footer-col-toggle" aria-label="Toggle">
                             <img src="{{ asset('images/icons/arrow.svg') }}" class="arrow-icon" alt="arrow">
                         </button>
                     </div>
                     <ul class="footer-links">
-                        <li><a href="#">Design</a></li>
-                        <li><a href="#">Development</a></li>
-                        <li><a href="#">Branding</a></li>
-                        <li><a href="#">Consulting</a></li>
+                        <li><a href="#">About xCommerz</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
                     </ul>
                 </div>
 
                 {{-- shop --}}
                 <div class="col-12 col-sm-6 col-lg footer-col">
                     <div class="footer-col-title" onclick="toggleCol(this)">
-                        services
+                        Shop
                         <button class="footer-col-toggle" aria-label="Toggle">
                             <img src="{{ asset('images/icons/arrow.svg') }}" class="arrow-icon" alt="arrow">
                         </button>
                     </div>
                     <ul class="footer-links">
-                        <li><a href="#">Design</a></li>
-                        <li><a href="#">Development</a></li>
-                        <li><a href="#">Branding</a></li>
-                        <li><a href="#">Consulting</a></li>
+                        <li><a href="/products?category[]=1">Appliances</a></li>
+                        <li><a href="/products?category[]=2">Computers & Tablets</a></li>
+                        <li><a href="/products?category[]=3">Mobile Phones</a></li>
+                        <li><a href="#">TV & Home Theater</a></li>
                     </ul>
                 </div>
 
@@ -347,6 +348,7 @@
                     </div>
                 </div>
             </div>
+
 
             {{-- footer bottom --}}
             {{-- Payment row --}}

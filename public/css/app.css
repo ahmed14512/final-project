@@ -163,6 +163,7 @@ nav .navbar {
     padding: 1rem 5%;
     background-color: var(--bg-neutral-primary);
     border-bottom: 1px solid rgba(225, 225, 225, 0.1);
+    flex-wrap: wrap;
 }
 
 
@@ -177,6 +178,7 @@ nav .navbar {
 
 .nav-inner {
     gap: 10px;
+    
 }
 
 
@@ -215,7 +217,7 @@ nav .navbar {
 /* --search bar-- */
 .custom-search {
     background-color: var(--color-brand-primary);
-    border: 3px solid var(--color-brand-primary);
+    border: 1.5px solid var(--color-brand-primary);
     max-width: 800px;
     border-radius: 10px;
     display: flex;
@@ -354,6 +356,7 @@ nav .navbar {
     background-color: var(--bg-neutral-primary);
     border-bottom: 1px solid var(--bg-neutral-secondary);
     padding: 0;
+    flex-wrap: wrap;
 }
 
 .btm-nav-link {

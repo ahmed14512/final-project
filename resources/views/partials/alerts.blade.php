@@ -34,6 +34,27 @@
         });
     @endif
 
+    @if (request()->get('login_required'))
+        Swal.fire({
+            icon: 'warning',
+            title: 'Login Required',
+            text: 'You must be logged in to add items to your cart.',
+            confirmButtonText: 'Login Now',
+            showCancelButton: true,
+            cancelButtonText: 'Continue Browsing',
+            confirmButtonColor: '#00378f',
+            cancelButtonColor: '#6c757d',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('login') }}";
+            } else {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('login_required');
+                history.replaceState(null, '', url.pathname + (url.search || ''));
+            }
+        });
+    @endif
+
     @if (session('guest_add_attempt'))
         document.addEventListener('DOMContentLoaded', function() {
             if (typeof openAuthPopup === 'function') {

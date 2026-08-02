@@ -10,35 +10,64 @@ use App\Models\Brand;
 class ShopController extends Controller
 {
     public function index(Request $request){
-            $quary = Product::with('category','brand')
+            $query = Product::with('category','brand')
                         ->where('status', 1);
+
+
+            // Search
+            if ($request->filled('search')) {
+                $query->where(function($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search . '%')
+
+                    ->orWhere('description', 'like', '%' . $request->search . '%')
+
+                    ->orWhereHas('category', function($cat) use ($request) {
+                        $cat->where('name', 'like', '%' . $request->search . '%');
+                    })
+                    
+                    ->orWhereHas('brand', function($brand) use ($request) {
+                        $brand->where('name', 'like', '%' . $request->search . '%');
+                    });
+                });
+            }             
 
             //filter by category
             if($request->has('category')){
-                $quary->wherein('category_id',$request->category);
+                $query->wherein('category_id',$request->category);
             }
 
             //filter by brand
             if($request->has('brand')){
-                $quary->wherein('brand_id',$request->brand);
+                $query->wherein('brand_id',$request->brand);
             }
 
 
             //sorting
             if($request->sort==='price-lh'){
-                $quary->orderBy('price','asc');
+                $query->orderBy('price','asc');
             }
             elseif($request->sort==='price-hl'){
-                $quary->orderBy('price','desc');
+                $query->orderBy('price','desc');
             }
             else{
-                 $quary->latest();
+                 $query->latest();
             }
 
-            $products = $quary->paginate(12);
+            $products = $query->paginate(12);
 
-            $categories = Category::where('status',1)->get();
-            $brands = Brand::where('status',1)->get();
+            //category ha atleast 1 product
+            $categories = Category::where('status',1)
+                                    ->whereHas('products',function($q) {
+                                    $q->where('status', 1);
+                                    })
+                                    ->get();
+            
+            //brand has atleast 1 product
+            $brands = Brand::where('status',1)
+                                    ->whereHas('products',function($q) {
+                                    $q->where('status', 1);
+                                    })
+                                    ->get();
 
             
 

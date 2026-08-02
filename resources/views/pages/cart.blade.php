@@ -27,8 +27,12 @@
 
                                 {{-- ----- thumb images ---- --}}
                                 <div class="cart-item-img-wrap">
+                                    @if ($item->product->stock == 0)
+                                        <span class="badge">Out of stock</span>
+                                    @endif
                                     <img src="{{ asset('storage/' . $item->product->image) }}"
                                         alt={{ $item->product->name }} class="cart-item-img">
+
                                 </div>
 
 
@@ -56,23 +60,38 @@
                                 </div>
 
                                 <div class="cart-item-price-wrap">
-                                    <div class="cart-item-price">Rs. {{ $item->product->price }}</div>
+                                    <div class="cart-item-price">Rs.{{ number_format($item->product->price) }}</div>
 
                                     <form action="{{ route('cart.update', $item->id) }}" method="POST">
                                         @csrf
                                         @method('PATCH')
 
-                                        <div class="qty-wrap">
-                                            <button type="submit" class="qty-btn" name="quantity"
-                                                value={{ $item->quantity - 1 }}
-                                                {{ $item->quantity <= 1 ? 'disabled' : '' }}>
-                                                − </button>
+                                        @if ($canCheckout)
+                                            <div class="qty-wrap">
+                                                <button type="submit" class="qty-btn" name="quantity"
+                                                    value={{ $item->quantity - 1 }}
+                                                    {{ $item->quantity <= 1 ? 'disabled' : '' }}>
+                                                    − </button>
 
-                                            <input type="number" class="qty-input" value={{ $item->quantity }}
-                                                min="1" max="99" readonly>
-                                            <button type="submit" name="quantity" class="qty-btn"
-                                                value="{{ $item->quantity + 1 }}">+</button>
-                                        </div>
+                                                <input type="number" class="qty-input" value={{ $item->quantity }}
+                                                    min="1" max="99" readonly>
+                                                <button type="submit" name="quantity" class="qty-btn"
+                                                    value="{{ $item->quantity + 1 }}">+</button>
+                                            </div>
+                                        @else
+                                            <div class="qty-wrap">
+                                                <button disabled class="qty-btn" style="opacity:0.5; cursor:not-allowed"
+                                                    name="quantity" value="{{ $item->quantity - 1 }}"
+                                                    {{ $item->quantity <= 1 ? 'disabled' : '' }}>
+                                                    − </button>
+
+                                                <input type="number" class="qty-input" value={{ $item->quantity }}
+                                                    min="1" max="99" readonly>
+                                                <button disabled name="quantity" class="qty-btn"
+                                                    style="opacity:0.5; cursor:not-allowed"
+                                                    value="{{ $item->quantity + 1 }}">+</button>
+                                            </div>
+                                        @endif
                                     </form>
                                 </div>
                             </div>
@@ -83,15 +102,24 @@
                     {{-- Order Summary --}}
                     @include('partials.order-summary')
                     <div>
-                        <a href="/checkout" class="checkout-btn">
-                            Continue to Checkout
-                            <img src="{{ asset('images/icons/arrow-right.svg') }}" alt="next"
-                                class="checkout-next-icon">
-                        </a>
+                        @if ($canCheckout)
+                            <a href="{{ route('checkout.index') }}" class="checkout-btn">
+                                Continue to Checkout
+                                <img src="{{ asset('images/icons/arrow-right.svg') }}" alt="next"
+                                    class="checkout-next-icon">
+                            </a>
+                        @else
+                            <button disabled class="checkout-btn" style="opacity:0.5; cursor:not-allowed;">
+                                Continue to Checkout
+                            </button>
+                            <p class="text-danger text-center mt-2">
+                                Remove out of stock items to continue
+                            </p>
+                        @endif
                     </div>
                 </div>
             @else
-                {{-- Empty cart state --}}
+                {{-- cart enpty --}}
                 <div class="text-center py-5">
                     <h3 class="mt-3 text-muted">Your cart is empty</h3>
                     <p class="text-muted">Add some products to get started!</p>

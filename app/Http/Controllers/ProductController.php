@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    // index — show all products
+    //----------------------------------show products
    
     public function index()
     {
@@ -24,7 +24,7 @@ class ProductController extends Controller
     }
 
    
-    // create — show add product form  
+    //----------------------------------add products  
     public function create()
     {
         $categories = Category::where('status', 1)->get();
@@ -34,7 +34,7 @@ class ProductController extends Controller
                      compact('categories', 'brands'));
     }
 
-    // store — save new product  
+    //----------------------------------save products  
     public function store(Request $request)
     {
 
@@ -44,7 +44,7 @@ class ProductController extends Controller
             'sku'          => 'required|string|unique:products,sku',
             'category_id'  => 'required|exists:categories,id',
             'brand_id'     => 'required|exists:brands,id',
-            'price'        => 'required|numeric|min:0',
+            'price'        => 'required|numeric|min:1',
             'stock'        => 'required|integer|min:0',
             'is_featured'  => 'boolean',
             'status'       => 'required|boolean',
@@ -54,7 +54,7 @@ class ProductController extends Controller
             'thumbnails.*' => 'image|mimes:jpg,png,jpeg,svg,webp|max:2048',
         ]);
 
-        // Upload main image
+        // main image
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')
@@ -67,7 +67,7 @@ class ProductController extends Controller
                                  ->store('products/spec', 'public');
         }
 
-        // Save product
+        // save product
         $product = Product::create([
             'name'        => $request->name,
             'slug'        => Str::slug($request->name),
@@ -81,9 +81,13 @@ class ProductController extends Controller
             'stock'       => $request->stock,
             'is_featured' => $request->is_featured ?? 0,
             'status'      => $request->status,
+            ], 
+            
+            [
+            'price.min' => 'Price must be at least Rs. 1. Price cannot be zero or negative.',
         ]);
 
-        // Upload thumbnails
+        //  thumbnails
         if ($request->hasFile('thumbnails')) {
             foreach ($request->file('thumbnails') as $thumb) {
                 $thumbPath = $thumb->store('products/thumbnails',
@@ -100,7 +104,7 @@ class ProductController extends Controller
     }
 
    
-    // edit — show edit form
+    //----------------------------------edit products
     public function edit(Product $product)
     {
         $categories = Category::where('status', 1)->get();
@@ -111,8 +115,7 @@ class ProductController extends Controller
     }
 
   
-    // update — save edited product
-  
+    //----------------------------------saving editged products
     public function update(Request $request, Product $product)
     {
         $request->validate([
@@ -121,7 +124,7 @@ class ProductController extends Controller
             'sku'          => 'required|string|unique:products,sku,'.$product->id,
             'category_id'  => 'required|exists:categories,id',
             'brand_id'     => 'required|exists:brands,id',
-            'price'        => 'required|numeric|min:0',
+            'price'        => 'required|numeric|min:1',
             'stock'        => 'required|integer|min:0',
             'is_featured'  => 'boolean',
             'status'       => 'required|boolean',
@@ -129,6 +132,10 @@ class ProductController extends Controller
             'spec_image'   => 'nullable|image|mimes:jpg,png,jpeg,svg,webp|max:2048',
             'thumbnails'   => 'nullable|array',
             'thumbnails.*' => 'image|mimes:jpg,png,jpeg,svg,webp|max:2048',
+            ], 
+            
+            [
+            'price.min' => 'Price must be at least Rs. 1. Price cannot be zero or negative.',
         ]);
 
 
@@ -160,7 +167,7 @@ class ProductController extends Controller
             'status'      => $request->status,
         ]);
 
-        // Upload new thumbnails
+        // new thumb
         if ($request->hasFile('thumbnails')) {
             foreach ($request->file('thumbnails') as $thumb) {
                 $thumbPath = $thumb->store('products/thumbnails',
@@ -177,7 +184,7 @@ class ProductController extends Controller
     }
 
 
-    // destroy — delete product
+    //----------------------------------delete products
     public function destroy(Product $product)
     {
         $product->delete();

@@ -40,10 +40,10 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => 'customer',
             'status'   => 1,
         ]);
 
+        //assigining the role
          $role = \App\Models\Role::where('name', 'customer')->first();
             if ($role) {
                 $user->roles()->attach($role->id);

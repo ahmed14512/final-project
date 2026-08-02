@@ -192,6 +192,7 @@
     display: flex;
     gap: 10px;
     justify-content: center;
+    padding-bottom: 10px;
 }
 
 .thumb {
@@ -305,6 +306,40 @@
     font-size: 0.85rem;
     color: var(--text-success-subtle);
     font-weight: var(--font-weight-semibold);
+}
+
+.in-stock {
+    color: green;
+}
+
+.out-stock {
+    color: red;
+}
+
+.in-stock {
+    color: green;
+}
+
+/* Out of Stock — red */
+.out-stock {
+    color: red;
+}
+
+/* Optional — style the dot too */
+.availability-dot.in-stock {
+    background-color: green;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.availability-dot.out-stock {
+    background-color: red;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
 }
 
 .product-price-row {

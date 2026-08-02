@@ -10,10 +10,9 @@ use App\Models\User;
 class DashboardController extends Controller
 {
    public function index() {
-        //Orders count
+
         $totalOrders = Order::count();
 
-        //sum of all order totals
         $totalRevenue = Order::sum('total');
 
         $totalCustomers = User::where('role','customer')->count();

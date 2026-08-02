@@ -20,12 +20,11 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AccountController;
 
 /*
-|--------------------------------------------------------------------------
-| Frontend / Customer Routes
-|--------------------------------------------------------------------------
+     ------------------------ home and prodcuts ---------------------------
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])
+     ->name('home');
 
 Route::get('/products', [ShopController::class, 'index'])
      ->name('products.index');
@@ -33,13 +32,10 @@ Route::get('/products', [ShopController::class, 'index'])
 Route::get('/products/{id}', [ShopController::class, 'show'])
      ->name('products.show');
 
-Route::get('/order-success/{order}', [OrderController::class, 'success'])
-     ->name('order.success');
+
 
 /*
-|--------------------------------------------------------------------------
-| Cart Routes
-|--------------------------------------------------------------------------
+     ------------------------ cart ---------------------------
 */
 
 Route::get('/cart', [CartController::class, 'index'])
@@ -61,9 +57,7 @@ Route::delete('/cart/{cart}', [CartController::class, 'remove'])
      ->name('cart.remove');
 
 /*
-|--------------------------------------------------------------------------
-| Checkout & Payment Routes
-|--------------------------------------------------------------------------
+     ------------------------ checkout and payment ---------------------------
 */
 
 Route::get('/checkout', [CheckoutController::class, 'index'])
@@ -78,31 +72,34 @@ Route::get('/payment', [CheckoutController::class, 'payment'])
 Route::post('/checkout/place-order', [CheckoutController::class, 'store'])
      ->name('checkout.store');
 
+//order success
+Route::get('/order-success/{order}', [OrderController::class, 'success'])
+     ->name('order.success');
+
 /*
-|--------------------------------------------------------------------------
-| My Account Routes
-|--------------------------------------------------------------------------
+     ------------------------ my account ---------------------------
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('/my-account', [AccountController::class, 'index'])
+     
+     Route::get('/my-account', [AccountController::class, 'index'])
          ->name('account.index');
 
-    Route::post('/my-account/profile', [AccountController::class, 'updateProfile'])
+     Route::post('/my-account/profile', [AccountController::class, 'updateProfile'])
          ->name('account.updateProfile');
 
-    Route::post('/my-account/password', [AccountController::class, 'updatePassword'])
+     Route::post('/my-account/password', [AccountController::class, 'updatePassword'])
          ->name('account.updatePassword');
 
-    Route::post('/my-account/address', [AccountController::class, 'saveAddress'])
+     Route::post('/my-account/address', [AccountController::class, 'saveAddress'])
          ->name('account.saveAddress');
+
+     Route::get('/invoice/{order}', [OrderController::class, 'invoice'])
+     ->name('order.invoice');
 });
 
 /*
-|--------------------------------------------------------------------------
-| Admin Login — OUTSIDE admin middleware group
-| Must be here so unauthenticated users can reach /admin/login
-|--------------------------------------------------------------------------
+     ------------------------ super admin, admin and staff login ---------------------------
 */
 
 Route::get('/admin/login', [AdminLoginController::class, 'create'])
@@ -115,10 +112,10 @@ Route::post('/admin/login', [AdminLoginController::class, 'store'])
 Route::post('/admin/logout', [AdminLoginController::class, 'destroy'])
      ->name('admin.logout');
 
+
+
 /*
-|--------------------------------------------------------------------------
-| Admin Panel Routes (protected by auth + admin middleware)
-|--------------------------------------------------------------------------
+     ------------------------ admin panel ---------------------------
 */
 
 Route::prefix('admin')
@@ -129,28 +126,35 @@ Route::prefix('admin')
     Route::get('/dashboard', [DashboardController::class, 'index'])
          ->name('dashboard');
 
-    // Admin/super_admin only (staff blocked by StaffMiddleware)
+    // super admin and admin only
     Route::middleware('staff')->group(function () {
         Route::resource('categories', CategoryController::class)
              ->except(['show']);
+
         Route::resource('brands', BrandController::class)
              ->except(['show']);
+
         Route::resource('products', ProductController::class)
              ->except(['show']);
+
         Route::get('products/images/{image}/delete',
             [ProductImageController::class, 'destroy'])
             ->name('products.images.destroy');
+
         Route::resource('users', UserController::class)
              ->except(['show']);
+
         Route::get('customers', [CustomerController::class, 'index'])
              ->name('customers.index');
+
         Route::get('customers/{customer}', [CustomerController::class, 'show'])
              ->name('customers.show');
+             
         Route::get('reports', [ReportController::class, 'index'])
              ->name('reports.index');
     });
 
-    // Orders — accessible by admin AND staff
+    // admins and staff
     Route::get('orders', [AdminOrderController::class, 'index'])
          ->name('orders.index');
     Route::get('orders/{order}', [AdminOrderController::class, 'show'])
@@ -162,25 +166,19 @@ Route::prefix('admin')
 });
 
 /*
-|--------------------------------------------------------------------------
-| Breeze Profile Routes
-|--------------------------------------------------------------------------
+     ------------------------ breeze ---------------------------
 */
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])
          ->name('profile.edit');
+
     Route::patch('/profile', [ProfileController::class, 'update'])
          ->name('profile.update');
+         
     Route::delete('/profile', [ProfileController::class, 'destroy'])
          ->name('profile.destroy');
 });
 
-Route::get('/test-flash', function () {
-    return redirect('/test-flash-check')->with('guest_add_attempt', true);
-});
 
-Route::get('/test-flash-check', function () {
-    dd(session('guest_add_attempt'), session()->all());
-});
 require __DIR__.'/auth.php';

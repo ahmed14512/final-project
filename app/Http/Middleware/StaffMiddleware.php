@@ -11,12 +11,12 @@ class StaffMiddleware
     {
         $user = auth()->user()->loadMissing('roles');
 
-        // Super admin and admin can access everything
+        // admins can access everything
         if ($user->hasAnyRole(['admin', 'super_admin'])) {
             return $next($request);
         }
 
-        // Staff can only access order routes
+        // Staff can only access orders
         if ($user->isStaff()) {
             $allowedRoutes = [
                 'admin.orders.index',

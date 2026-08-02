@@ -8,7 +8,9 @@ use App\Models\User;
 class CustomerController extends Controller
 {   
     public function index(){
-        $customers = User::where('role','customer')
+        $customers = User::whereHas('roles', function($q) {
+                        $q->where('name', 'customer');
+                     })
                         ->withCount('orders')
                         ->withSum('orders','total')
                         ->latest()

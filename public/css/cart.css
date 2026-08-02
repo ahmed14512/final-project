@@ -333,6 +333,15 @@
     -moz-appearance: textfield;
 }
 
+.badge {
+    background-color: var(--bg-error-bold);
+    border-radius: 2px;
+    font-size: 0.8rem;
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-regular);
+    position: absolute;
+}
+
 .qty-input::-webkit-outer-spin-button,
 .qty-input::-webkit-inner-spin-button {
     -webkit-appearance: none;

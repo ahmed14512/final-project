@@ -9,7 +9,7 @@
 
 @section('content')
 
-    {{-- --------------- Step indicator --------------- --}}
+    {{-- step circle --}}
     <section class="checkout-steps-bar">
         <div class="container">
             <div class="checkout-steps">
@@ -41,7 +41,7 @@
 
                         <div class="payment-options">
 
-                            {{-- Visa --}}
+                            {{-- visa --}}
                             <label class="payment-option">
                                 <input type="radio" name="payment_method" value="visa" checked>
                                 <div class="payment-option-body">
@@ -50,7 +50,7 @@
                                 </div>
                             </label>
 
-                            {{-- Mastercard --}}
+                            {{-- master --}}
                             <label class="payment-option">
                                 <input type="radio" name="payment_method" value="mastercard">
                                 <div class="payment-option-body">
@@ -59,7 +59,7 @@
                                 </div>
                             </label>
 
-                            {{-- Apple Pay --}}
+                            {{-- apple --}}
                             <label class="payment-option">
                                 <input type="radio" name="payment_method" value="applepay">
                                 <div class="payment-option-body">
@@ -69,7 +69,7 @@
                                 </div>
                             </label>
 
-                            {{-- Google Pay --}}
+                            {{-- GP --}}
                             <label class="payment-option">
                                 <input type="radio" name="payment_method" value="googlepay">
                                 <div class="payment-option-body">
@@ -78,7 +78,7 @@
                                 </div>
                             </label>
 
-                            {{-- Cash on Delivery --}}
+                            {{-- COD --}}
                             <label class="payment-option">
                                 <input type="radio" name="payment_method" value="cod">
                                 <div class="payment-option-body">
@@ -90,7 +90,7 @@
                     </div>
                 </div>
 
-                {{-- ───── RIGHT — Order Summary ───── --}}
+                {{-- order summary --}}
                 @include('partials.order-summary')
 
                 <form action="{{ route('checkout.store') }}" method="POST">

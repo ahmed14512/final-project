@@ -8,8 +8,7 @@ class Address extends Model
 {
     protected $fillable = [
         'user_id',
-        'first_name',
-        'last_name',
+        'name',
         'phone',
         'email',
         'city',
@@ -18,7 +17,7 @@ class Address extends Model
     ];
 
     public function user(){
-    return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
 

@@ -35,7 +35,7 @@
                     <label class="form-label fw-semibold">
                         Description
                     </label>
-                    <textarea name="description" class="form-control" rows="4" placeholder="Product description">{{ old('description') }}</textarea>
+                    <textarea name="description" id="description" class="form-control" rows="5" placeholder="Product description">{{ old('description') }}</textarea>
                 </div>
 
                 {{-- SKU --}}
@@ -96,7 +96,8 @@
                             Price (Rs.) <span class="text-danger">*</span>
                         </label>
                         <input type="number" name="price" class="form-control @error('price') is-invalid @enderror"
-                            value="{{ old('price') }}" placeholder="e.g. 89900" min="0" step="0.01" required>
+                            value="{{ old('price', $product->price ?? '') }}" placeholder="e.g. 89900" min="1"
+                            step="0.01" required>
                         @error('price')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -200,4 +201,23 @@
 
 @section('js')
     @include('admin.partials.alerts')
+
+    <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#description'), {
+                toolbar: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', '|',
+                    'bulletedList', 'numberedList', '|',
+                    'blockQuote', '|',
+                    'undo', 'redo'
+                ],
+                placeholder: 'Enter product description...',
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection
